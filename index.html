@@ -707,29 +707,39 @@
 .popup-btn:hover {
     background-color: #e65550;
 }
+
+        .popup-content {
+    position: relative;
+    background: url('images/info1.jpeg') center/cover no-repeat;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Dark overlay so text is readable */
+.popup-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Make content appear above overlay */
+.popup-inner {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
     </style>
 </head>
 <body>
 <div id="media-popup" class="popup-overlay">
     <div class="popup-content">
+        <span class="close-popup" onclick="closePopup()">&times;</span>
         <div class="popup-inner">
-            <!-- Image with close button overlay -->
-            <div class="popup-image-wrapper">
-                <img src="images/info1.jpeg" alt="Pathfinder Day" class="popup-image">
-                <span class="close-popup" onclick="closePopup()">&times;</span>
-            </div>
-
-            <!-- Phrase / Badge -->
-            <span class="popup-badge">Adventure. Faith. Friendship.</span>
-
-            <!-- Main Heading -->
-            <h2>Celebrate Pathfinder Day!</h2>
-
-            <!-- Description -->
-            <p>Join us for fun, learning, and service as we honor God’s guidance and explore His world together.</p>
-
-            <!-- Button -->
-            <a href="pathfinder.html" class="popup-btn">Learn More & Join</a>
+            <span class="popup-badge">Pathfinder Day</span>
+            <h2>Join us on this day</h2>
+            <p>pathfinder.</p>
+            <a href="ministries/pathfinder.html" class="popup-btn">Learn More & Apply</a>
         </div>
     </div>
 </div>
@@ -1168,6 +1178,7 @@ window.onload = function() {
 </body>
 
 </html>
+
 
 
 
