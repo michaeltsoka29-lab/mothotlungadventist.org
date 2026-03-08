@@ -428,7 +428,7 @@ form.addEventListener('submit', function(e) {
         .then(async (response) => {
             let json = await response.json();
             if (response.status == 200) {
-                result.innerHTML = "🙏 Thank you! Your request has been sent to the prayer team.";
+                result.innerHTML = " Thank you! Your request has been sent to the prayer team.";
                 form.reset();
             } else {
                 result.innerHTML = "Something went wrong. Please try again.";
@@ -514,13 +514,26 @@ form.addEventListener('submit', function(e) {
         <div class="copyright">
             &copy; 2026 Mothotlung Seventh-day Adventist Church. All Rights Reserved.
         </div>
-        <div class="credits">
-      &bull; Secured by <span class="credit-brand">Hexert</span>
-        </div>
+      <div class="credits">
+    &bull; Made by 
+    <a href="https://wacxdigital.rf.gd" target="_blank" class="credit-brand">WacxDigital</a> 
+    &amp; Leetec Solutions
+</div>
     </div>
 </footer>
 
 <style>
+    .credit-brand {
+    color: #00bfff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.credit-brand:hover {
+    text-decoration: underline;
+}
+
+    
     .floating-container {
   position: fixed;
   bottom: 25px;
@@ -695,6 +708,7 @@ form.addEventListener('submit', function(e) {
 </body>
 
 </html>
+
 
 
 
