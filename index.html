@@ -3,22 +3,20 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WF1R5LZ47E"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WF1R5LZ47E');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WF1R5LZ47E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-WF1R5LZ47E');
+    </script>
     <link rel="icon" type="image/png" href="favicon.png">
-
-<link rel="apple-touch-icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Mothotlung Seventh-Day Adventist Church | Welcome Home</title>
+    <title>Mothotlung Seventh-Day Adventist Church | Welcome Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary-green: #2E5C48;
@@ -26,6 +24,9 @@
             --soft-beige: #F5F1EA;
             --text-dark: #2d3436;
             --white: #FFFFFF;
+            /* Heights for offset calculations */
+            --nav-height: 74px;
+            --bar-height: 42px;
         }
 
         body, html {
@@ -36,51 +37,152 @@
             color: var(--text-dark);
         }
 
-        /* --- NAVIGATION --- */
+        /* ============================================================
+           NAVIGATION
+        ============================================================ */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(255, 255, 255, 0.95);
+            padding: 17px 8%;
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(10px);
             position: fixed;
             width: 84%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
         }
 
         .logo { font-weight: 700; color: var(--primary-green); text-decoration: none; font-size: 1.2rem; }
         .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 25px; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent-gold); }
 
-        /* --- HERO SECTION --- */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .sda-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .church-name {
+            font-weight: 700;
+            color: var(--primary-green);
+            font-size: 1.2rem;
+        }
+
+        /* ============================================================
+           CONTACT INFO BAR  — sits directly below the nav
+        ============================================================ */
+        .contact-bar {
+            position: fixed;
+            top: var(--nav-height);   /* flush under the nav */
+            left: 0;
+            width: 100%;
+            background: var(--primary-green);
+            z-index: 999;
+            padding: 10px 8%;
+            box-sizing: border-box;
+            border-top: 1px solid rgba(197,160,89,0.25);
+        }
+
+        .contact-bar-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: nowrap;    /* single row on desktop */
+        }
+
+        .contact-bar a {
+            color: #f0e6d0;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .contact-bar a i {
+            color: var(--accent-gold);
+            font-size: 0.82rem;
+        }
+
+        .contact-bar a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* ---- Tablet: allow wrap but keep decent size ---- */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 66px;
+                --bar-height: 70px;   /* taller when items wrap to 2 rows */
+            }
+            .contact-bar {
+                padding: 8px 4%;
+            }
+            .contact-bar-inner {
+                gap: 16px 24px;
+                flex-wrap: wrap;      /* wrap to 2 rows if needed */
+                justify-content: center;
+            }
+            .contact-bar a {
+                font-size: 0.78rem;
+            }
+        }
+
+        /* ---- Small mobile: shrink further, never hide ---- */
+        @media (max-width: 480px) {
+            :root {
+                --bar-height: 88px;
+            }
+            .contact-bar {
+                padding: 7px 3%;
+            }
+            .contact-bar-inner {
+                gap: 8px 16px;
+            }
+            .contact-bar a {
+                font-size: 0.7rem;
+                gap: 5px;
+            }
+            .contact-bar a i {
+                font-size: 0.72rem;
+            }
+            /* On very small screens hide the label text, keep icon + number */
+            .contact-bar a .cb-label {
+                display: none;
+            }
+        }
+
+        /* ============================================================
+           HERO  —  pushed below nav + contact bar
+        ============================================================ */
         .hero {
-    /* 1. Set the height (100vh means 100% of the screen height) */
-    height: 100vh;
+            height: 100vh;
+            padding-top: calc(var(--nav-height) + var(--bar-height));
+            box-sizing: border-box;
+            background: linear-gradient(rgba(0,0,0,0.50), rgba(0,0,0,0.50)),
+                        url('indexone.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
 
-            .hero {
-    margin-top: 105px; /* accounts for nav + contact bar height */
-}
-
-    /* 2. Add the dark overlay and your image */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                url('indexone.png');
-
-    /* 3. VITAL: Make the image cover the area smoothly */
-    background-size: cover;       /* Ensures image covers the whole box */
-    background-position: center;  /* Centers the image */
-    background-repeat: no-repeat; /* Prevents tiling */
-
-    /* 4. Center the text over the image */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-}
         .hero-content h1 {
             font-family: 'Playfair Display', serif;
             font-size: 4rem;
@@ -104,10 +206,11 @@
             transition: 0.3s;
             display: inline-block;
         }
-
         .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
-        /* --- QUICK INFO BAR --- */
+        /* ============================================================
+           QUICK INFO BAR
+        ============================================================ */
         .info-bar {
             background: var(--primary-green);
             color: white;
@@ -116,10 +219,11 @@
             padding: 30px 8%;
             text-align: center;
         }
-
         .info-item h4 { margin: 0 0 5px 0; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- WELCOME SECTION --- */
+        /* ============================================================
+           WELCOME SECTION
+        ============================================================ */
         .welcome-section {
             padding: 100px 8%;
             display: grid;
@@ -127,24 +231,23 @@
             gap: 60px;
             align-items: center;
         }
-
         .welcome-img img { width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .welcome-text h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary-green); }
 
-        /* --- SERVICES CARDS --- */
+        /* ============================================================
+           FEATURES / CARDS
+        ============================================================ */
         .features {
             background-color: var(--soft-beige);
             padding: 100px 8%;
             text-align: center;
         }
-
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             margin-top: 50px;
         }
-
         .f-card {
             background: white;
             padding: 40px;
@@ -152,799 +255,508 @@
             transition: 0.3s;
             text-decoration: none;
             color: inherit;
+            cursor: default;
         }
-
         .f-card:hover { transform: translateY(-10px); }
         .f-card i { font-size: 2.5rem; color: var(--accent-gold); display: block; margin-bottom: 20px; }
 
-        /* --- FOOTER --- */
-        footer {
-            background: var(--text-dark);
+        .card-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            background-color: var(--primary-green);
             color: white;
-            padding: 60px 8% 20px;
-            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-green);
+        }
+        .card-btn:hover {
+            background-color: transparent;
+            color: var(--primary-green);
+            transform: translateX(5px);
         }
 
+        .prayer-btn {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            animation: gentlePulse 3s infinite;
+        }
+        .prayer-btn:hover {
+            background-color: transparent;
+            color: var(--accent-gold);
+            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+        }
+        @keyframes gentlePulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .service-btn {
+            background-color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+            margin-top: 15px;
+        }
+        .service-btn:hover {
+            background-color: transparent;
+            color: var(--primary-green);
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(46, 92, 72, 0.2);
+        }
+
+        /* ============================================================
+           GLOBAL LINKS
+        ============================================================ */
+        .global-links {
+            padding: 60px 8%;
+            background-color: var(--soft-beige);
+            text-align: center;
+        }
+        .links-container h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-green);
+            margin-bottom: 30px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .gc-btn, .toc-btn {
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary-green);
+        }
+        .gc-btn { background-color: var(--primary-green); color: white; }
+        .toc-btn { background-color: transparent; color: var(--primary-green); }
+        .gc-btn:hover, .toc-btn:hover {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ============================================================
+           BRANCH CARDS
+        ============================================================ */
+        .branch-card-interactive {
+            display: flex;
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
+        }
+        .branch-card-interactive:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(197, 160, 89, 0.2);
+        }
+        .branch-image {
+            width: 40%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+        .branch-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #C5A059;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .branch-info { padding: 30px; width: 60%; }
+        .visit-branch-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #C5A059;
+            font-weight: bold;
+            text-decoration: none;
+            transition: padding-left 0.3s ease;
+        }
+        .visit-branch-btn:hover { padding-left: 10px; }
+
+        /* ============================================================
+           POPUP
+        ============================================================ */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .popup-content {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .popup-image-wrapper { position: relative; }
+        .popup-image { width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px; }
+        .close-popup {
+            position: absolute;
+            top: 10px; right: 10px;
+            font-size: 28px; font-weight: bold;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            width: 35px; height: 35px;
+            text-align: center; line-height: 35px;
+            border-radius: 50%;
+            cursor: pointer; z-index: 10;
+        }
+        .popup-badge {
+            display: inline-block;
+            background-color: #FF6F61;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        .popup-inner h2 { margin: 10px 0; font-size: 1.6rem; }
+        .popup-inner p { margin-bottom: 20px; font-size: 1rem; line-height: 1.4; }
+        .popup-btn {
+            display: inline-block;
+            background-color: #FF6F61;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .popup-btn:hover { background-color: #e65550; }
+
+        /* ============================================================
+           FAQ
+        ============================================================ */
+        .index-faq {
+            padding: 80px 8%;
+            background-color: #f4f4f4;
+        }
+        .index-faq h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-item {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .faq-item summary {
+            padding: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #2c3e50;
+            outline: none;
+        }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: '+'; font-size: 1.2rem; color: var(--primary-green); }
+        .faq-item details[open] summary::after { content: '−'; }
+        .faq-content { padding: 0 20px 20px 20px; color: #555; line-height: 1.6; }
+
+        .btn-support {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: transparent;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-support:hover {
+            background-color: var(--primary-green);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(74, 124, 89, 0.2);
+        }
+
+        /* ============================================================
+           COOKIE
+        ============================================================ */
+        #cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 9999;
+            display: none;
+            border: 1px solid var(--accent-gold);
+            text-align: center;
+        }
+        #cookie-banner p { font-size: 0.85rem; margin-bottom: 15px; color: var(--text-dark); }
+        .cookie-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .cookie-policy-link {
+            color: var(--primary-green);
+            text-decoration: underline;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+        .cookie-policy-link:hover { color: var(--accent-gold); }
+
+        /* ============================================================
+           FLOATING BUTTONS (right side)
+        ============================================================ */
+        .floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 9999;
+        }
+        .floating-button {
+            width: 55px; height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .floating-button:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
+        .whatsapp  { background-color: #25D366; }
+        .email     { background-color: #007bff; }
+        .support-page { background-color: #ff9800; }
+
+        /* ============================================================
+           BACK TO TOP
+        ============================================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background-color: var(--accent-gold);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        .back-to-top:hover { background-color: var(--primary-green); transform: translateY(-5px); }
+
+        /* ============================================================
+           HAMBURGER
+        ============================================================ */
+        .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .hamburger span {
+            width: 25px; height: 3px;
+            background-color: var(--primary-green);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ============================================================
+           RESPONSIVE — general
+        ============================================================ */
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2.5rem; }
             .info-bar { grid-template-columns: 1fr; gap: 20px; }
             .welcome-section { grid-template-columns: 1fr; }
+
+            .hamburger { display: flex; }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 66px;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                padding: 20px 0;
+                text-align: center;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { display: flex; }
+            .nav-links a { margin: 15px 0; }
+
+            .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            .back-to-top { bottom: 20px; right: 20px; width: 45px; height: 45px; }
         }
 
-        /* --- HAMBURGER MENU STYLES --- */
-.hamburger {
-    display: none; /* Hidden by default on desktop */
-    flex-direction: column;
-    cursor: pointer;
-    gap: 5px;
-}
-
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background-color: var(--primary-green);
-    border-radius: 2px;
-    transition: 0.3s;
-}
-
-/* MOBILE RESPONSIVENESS (Screens smaller than 768px) */
-@media (max-width: 768px) {
-    .hamburger {
-        display: flex; /* Show hamburger */
-    }
-
-    .nav-links {
-        display: none; /* Hide links by default on mobile */
-        flex-direction: column;
-        position: absolute;
-        top: 70px; /* Adjust based on nav height */
-        left: 0;
-        width: 100%;
-        background-color: var(--white);
-        padding: 20px 0;
-        text-align: center;
-        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-    }
-
-    .nav-links.active {
-        display: flex; /* Show links when "active" class is added */
-    }
-
-    .nav-links a {
-        margin: 15px 0;
-    }
-
-    /* Animation: Turn hamburger into an 'X' when active */
-    .hamburger.active span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-}
-/* --- BACK TO TOP STYLES --- */
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background-color: var(--accent-gold);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none; /* Hidden by default */
-    font-size: 1.5rem;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    transition: all 0.3s ease;
-}
-
-.back-to-top:hover {
-    background-color: var(--primary-green);
-    transform: translateY(-5px);
-}
-
-/* For mobile, we make it slightly smaller */
-@media (max-width: 768px) {
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 45px;
-        height: 45px;
-    }
-}
-
-
-.logo-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-    }
-
-    .sda-logo {
-        height: 40px; /* Adjust size as needed */
-        width: auto;
-    }
-
-    .church-name {
-        font-weight: 700;
-        color: var(--primary-green);
-        font-size: 1.2rem;
-    }
-    
-    @media (max-width: 480px) {
-    .church-name { 
-        display: block; /* Ensures it is visible */
-        font-size: 0.85rem; /* Shrinks the text so it fits */
-        max-width: 150px; /* Prevents it from crashing into the hamburger menu */
-        line-height: 1.2;
-    }
-    
-    .logo-container {
-        gap: 8px; /* Tightens the space between logo and text */
-    }
-}
-
-    /* --- COOKIE CONSENT STYLES --- */
-.cookie-container {
-    position: fixed;
-    bottom: -100px; /* Hidden initially */
-    left: 0;
-    right: 0;
-    background: var(--white);
-    box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
-    padding: 20px 8%;
-    z-index: 10000; /* Stays above everything */
-    transition: bottom 0.5s ease-in-out;
-}
-
-.cookie-container.show {
-    bottom: 0; /* Slides up */
-}
-
-.cookie-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.cookie-content p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--text-dark);
-}
-
-.cookie-content a {
-    color: var(--primary-green);
-    font-weight: 600;
-}
-
-.cookie-btn {
-    background: var(--primary-green);
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
-    white-space: nowrap;
-    margin-left: 20px;
-}
-
-.cookie-btn:hover {
-    background: var(--accent-gold);
-}
-
-/* Mobile adjust */
-@media (max-width: 600px) {
-    .cookie-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-    .cookie-btn {
-        margin-left: 0;
-        width: 100%;
-    }
-}
-
-        .card-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 25px;
-    background-color: var(--primary-green);
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border: 2px solid var(--primary-green);
-}
-
-.card-btn:hover {
-    background-color: transparent;
-    color: var(--primary-green);
-    transform: translateX(5px); /* Subtle nudge to the right */
-}
-
-/* Ensure the card itself is no longer a clickable link globally */
-.f-card {
-    cursor: default;
-}
-        /* Specific styling for the Prayer Button */
-.prayer-btn {
-    background-color: var(--accent-gold); /* Using gold for a warmer, spiritual feel */
-    border-color: var(--accent-gold);
-}
-
-.prayer-btn:hover {
-    background-color: transparent;
-    color: var(--accent-gold);
-    box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
-}
-
-/* Optional: Pulse animation to draw attention to the prayer request */
-.prayer-btn {
-    animation: gentlePulse 3s infinite;
-}
-
-@keyframes gentlePulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
-}
-
-        /* Specific styling for the Service/Involved Button */
-.service-btn {
-    background-color: var(--primary-green);
-    border: 2px solid var(--primary-green);
-    margin-top: 15px;
-}
-
-.service-btn:hover {
-    background-color: transparent;
-    color: var(--primary-green);
-    font-weight: 700;
-    box-shadow: 0 5px 15px rgba(46, 92, 72, 0.2);
-}
-
-        #cookie-banner {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    z-index: 9999; /* This ensures it stays on top of the map and nav */
-    display: none; /* Hidden by default, shown by JS */
-    border: 1px solid var(--accent-gold);
-    text-align: center;
-}
-
-#cookie-banner p {
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-    color: var(--text-dark);
-}
-
-.cookie-btn {
-    background: var(--primary-green);
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-
-
-
-
-
-
-
-        /* Styling for the Privacy link inside the banner */
-.cookie-policy-link {
-    color: var(--primary-green);
-    text-decoration: underline;
-    font-weight: 600;
-    display: inline-block;
-    margin-top: 5px;
-    font-size: 0.8rem;
-}
-
-.cookie-policy-link:hover {
-    color: var(--accent-gold);
-}
-
-/* Ensure the banner doesn't cover important buttons on very small phones */
-@media (max-width: 400px) {
-    #cookie-banner {
-        padding: 15px;
-        bottom: 10px;
-    }
-}
-        .global-links {
-    padding: 60px 8%;
-    background-color: var(--soft-beige);
-    text-align: center;
-}
-
-.links-container h2 {
-    font-family: 'Playfair Display', serif;
-    color: var(--primary-green);
-    margin-bottom: 30px;
-}
-
-.button-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.gc-btn, .toc-btn {
-    padding: 12px 30px;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 5px;
-    transition: 0.3s;
-    font-size: 0.9rem;
-    border: 2px solid var(--primary-green);
-}
-
-.gc-btn {
-    background-color: var(--primary-green);
-    color: white;
-}
-
-.toc-btn {
-    background-color: transparent;
-    color: var(--primary-green);
-}
-
-.gc-btn:hover, .toc-btn:hover {
-    background-color: var(--accent-gold);
-    border-color: var(--accent-gold);
-    color: white;
-    transform: translateY(-3px);
-}
-
-        .floating-container {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  z-index: 9999;
-}
-
-.floating-button {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.floating-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-}
-
-.whatsapp { background-color: #25D366; }
-.email { background-color: #007bff; }
-        /* Unique color for the support page button (e.g., Orange or Purple) */
-.support-page { background-color: #ff9800; }
-
-
-
-        .branch-card-interactive {
-    display: flex;
-    max-width: 700px;
-    margin: 40px auto;
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #eee;
-}
-
-/* The Cool Hover Effect */
-.branch-card-interactive:hover {
-    transform: translateY(-10px); /* Lifts the card up */
-    box-shadow: 0 15px 30px rgba(197, 160, 89, 0.2); /* Adds a golden glow */
-}
-
-.branch-image {
-    width: 40%;
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-
-.branch-tag {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #C5A059;
-    color: white;
-    padding: 5px 10px;
-    font-size: 0.7rem;
-    border-radius: 20px;
-    font-weight: bold;
-}
-
-.branch-info {
-    padding: 30px;
-    width: 60%;
-}
-
-.visit-branch-btn {
-    display: inline-block;
-    margin-top: 20px;
-    color: #C5A059;
-    font-weight: bold;
-    text-decoration: none;
-    transition: padding-left 0.3s ease;
-}
-
-.visit-branch-btn:hover {
-    padding-left: 10px; /* Arrows moves slightly on hover */
-}
-      /* Popup overlay */
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-/* Popup content */
-.popup-content {
-    position: relative;
-    background: white;
-    border-radius: 15px;
-    max-width: 500px;
-    width: 90%;
-    padding: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    overflow: hidden;
-}
-
-/* Image wrapper */
-.popup-image-wrapper {
-    position: relative;
-}
-
-/* Popup image */
-.popup-image {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-/* Close button on top of image */
-.close-popup {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-    background: rgba(0,0,0,0.5); /* semi-transparent background */
-    width: 35px;
-    height: 35px;
-    text-align: center;
-    line-height: 35px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
-}
-
-/* Badge */
-.popup-badge {
-    display: inline-block;
-    background-color: #FF6F61;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin: 10px 0;
-    font-size: 0.9rem;
-}
-
-/* Heading */
-.popup-inner h2 {
-    margin: 10px 0;
-    font-size: 1.6rem;
-}
-
-/* Paragraph */
-.popup-inner p {
-    margin-bottom: 20px;
-    font-size: 1rem;
-    line-height: 1.4;
-}
-
-/* Button */
-.popup-btn {
-    display: inline-block;
-    background-color: #FF6F61;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.popup-btn:hover {
-    background-color: #e65550;
-}
-
-
-
-        /* --- Index Page FAQ Section --- */
-.index-faq {
-    padding: 80px 8%;
-    background-color: #f4f4f4; /* Subtle background to separate it from the footer */
-}
-
-.index-faq h2 {
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin-bottom: 40px;
-}
-
-.faq-container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.faq-item {
-    background: white;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    overflow: hidden;
-}
-
-.faq-item summary {
-    padding: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #2c3e50;
-    outline: none;
-}
-
-.faq-item summary::-webkit-details-marker {
-    display: none;
-}
-
-.faq-item summary::after {
-    content: '+';
-    font-size: 1.2rem;
-    color: var(--primary-green, #4A7C59);
-}
-
-.faq-item details[open] summary::after {
-    content: '−';
-}
-
-.faq-content {
-    padding: 0 20px 20px 20px;
-    color: #555;
-    line-height: 1.6;
-}
-
-
-        .btn-support {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: transparent;
-    color: var(--primary-green, #4A7C59);
-    border: 2px solid var(--primary-green, #4A7C59);
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: all 0.3s ease;
-}
-
-.btn-support:hover {
-    background-color: var(--primary-green, #4A7C59);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(74, 124, 89, 0.2);
-}
-
-     /* --- CONTACT INFO BAR --- */
-.contact-bar {
-    position: fixed;
-    top: 72px; /* sits flush under the nav */
-    left: 0;
-    width: 100%;
-    background: var(--primary-green);
-    z-index: 999;
-    padding: 7px 8%;
-    box-sizing: border-box;
-}
-
-.contact-bar-inner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 35px;
-    flex-wrap: wrap;
-}
-
-.contact-bar a {
-    color: #f0e6d0;
-    text-decoration: none;
-    font-size: 0.78rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: color 0.2s;
-}
-
-.contact-bar a i {
-    color: var(--accent-gold);
-    font-size: 0.75rem;
-}
-
-.contact-bar a:hover {
-    color: var(--accent-gold);
-}
-
-@media (max-width: 600px) {
-    .contact-bar {
-        top: 65px;
-        padding: 6px 4%;
-    }
-    .contact-bar-inner {
-        gap: 14px;
-        justify-content: center;
-    }
-    .contact-bar a {
-        font-size: 0.7rem;
-    }
-}   
+        @media (max-width: 480px) {
+            .church-name {
+                font-size: 0.85rem;
+                max-width: 150px;
+                line-height: 1.2;
+            }
+            .logo-container { gap: 8px; }
+        }
     </style>
 </head>
 <body>
+
+<!-- ============================================================
+     POPUP
+============================================================ -->
 <div id="media-popup" class="popup-overlay">
     <div class="popup-content">
         <div class="popup-inner">
-            <!-- Image with close button overlay -->
             <div class="popup-image-wrapper">
                 <img src="images/info1.jpeg" alt="Pathfinder Day" class="popup-image">
                 <span class="close-popup" onclick="closePopup()">&times;</span>
             </div>
-
-            <!-- Phrase / Badge -->
             <span class="popup-badge">Adventure. Faith. Friendship.</span>
-
-            <!-- Main Heading -->
             <h2>Celebrate Pathfinder Day!</h2>
-
-            <!-- Description -->
-            <p>Join us for fun, learning, and service as we honor God’s guidance and explore His world together.</p>
-
-            <!-- Button -->
-            <a href="ministries/pathfinder.html" class="popup-btn">Learn More & Join</a>
+            <p>Join us for fun, learning, and service as we honor God's guidance and explore His world together.</p>
+            <a href="ministries/pathfinder.html" class="popup-btn">Learn More &amp; Join</a>
         </div>
     </div>
 </div>
-    
-   <nav>
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav>
     <a href="index.html" class="logo-container">
         <img src="adventist-symbol-circle--denim.png" alt="SDA Logo" class="sda-logo">
         <span class="church-name">Mothotlung Seventh-day Adventist Church</span>
     </a>
     <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
-
     <div class="nav-links" id="nav-links">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="location.html">Visit</a>
         <a href="ministries.html">Ministries</a>
-         <a href="media.html">Sermons</a>
+        <a href="media.html">Sermons</a>
         <a href="give.html">Give</a>
         <a href="connect.html">Prayer Request</a>
     </div>
 </nav>
 
-<!-- CONTACT INFO BAR -->
+<!-- ============================================================
+     CONTACT INFO BAR  (directly under nav)
+============================================================ -->
 <div class="contact-bar">
     <div class="contact-bar-inner">
         <a href="tel:+27723615540">
-            <i class="fa-solid fa-phone"></i> Clerk: +27 72 361 5540
+            <i class="fa-solid fa-phone"></i>
+            <span class="cb-label">Clerk:&nbsp;</span>+27 72 361 5540
         </a>
         <a href="tel:+27723227621">
-            <i class="fa-solid fa-phone"></i> Elder: +27 72 322 7621
+            <i class="fa-solid fa-phone"></i>
+            <span class="cb-label">Elder:&nbsp;</span>+27 72 322 7621
         </a>
         <a href="mailto:mothutlung@toc.adventist.org">
-            <i class="fa-solid fa-envelope"></i> mothutlung@toc.adventist.org
+            <i class="fa-solid fa-envelope"></i>
+            <span class="cb-label">mothutlung@toc.adventist.org</span>
         </a>
     </div>
 </div>
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Finding Peace in Jesus</h1>
-            <p>Welcome to a community dedicated to sharing the everlasting gospel and the joy of the Sabbath rest.</p>
-            <a href="location.html" class="cta-btn">Join us this Sabbath</a>
-        </div>
-    </header>
 
-    <section class="info-bar">
-        <div class="info-item">
-            <h4>Sabbath School</h4>
-            <p>Saturdays @ 9:15 AM</p>
-        </div>
-        <div class="info-item">
-            <h4>Divine Service</h4>
-            <p>Saturdays @ 11:00 AM</p>
-        </div>
-         <div class="info-item">
-            <h4>Afternoon Lessons</h4>
-            <p>Saturdays @ 2:30 PM</p>
-        </div>
-    </section>
+<!-- ============================================================
+     HERO
+============================================================ -->
+<header class="hero">
+    <div class="hero-content">
+        <h1>Finding Peace in Jesus</h1>
+        <p>Welcome to a community dedicated to sharing the everlasting gospel and the joy of the Sabbath rest.</p>
+        <a href="location.html" class="cta-btn">Join us this Sabbath</a>
+    </div>
+</header>
 
-    <section class="welcome-section">
-        <div class="welcome-img">
-            <img src="meta.jpeg" alt="Church Interior">
-        </div>
-        <div class="welcome-text">
-            <h2>You Belong Here</h2>
-            <p>Whether you’re a lifelong Adventist or just curious about who Jesus is, our doors and hearts are open to you. We believe in a faith that touches every part of life—physical, mental, and spiritual.</p>
-            <p>Join us as we study the Word, serve our neighbors, and wait with hope for the return of our Savior.</p>
-            <a href="about.html" style="color: var(--primary-green); font-weight: 700; text-decoration: none;">Our Beliefs & Mission →</a>
-        </div>
-    </section>
-     <section class="branch-feature">
+<!-- ============================================================
+     QUICK INFO BAR
+============================================================ -->
+<section class="info-bar">
+    <div class="info-item">
+        <h4>Sabbath School</h4>
+        <p>Saturdays @ 9:15 AM</p>
+    </div>
+    <div class="info-item">
+        <h4>Divine Service</h4>
+        <p>Saturdays @ 11:00 AM</p>
+    </div>
+    <div class="info-item">
+        <h4>Afternoon Lessons</h4>
+        <p>Saturdays @ 2:30 PM</p>
+    </div>
+</section>
+
+<!-- ============================================================
+     WELCOME SECTION
+============================================================ -->
+<section class="welcome-section">
+    <div class="welcome-img">
+        <img src="meta.jpeg" alt="Church Interior">
+    </div>
+    <div class="welcome-text">
+        <h2>You Belong Here</h2>
+        <p>Whether you're a lifelong Adventist or just curious about who Jesus is, our doors and hearts are open to you. We believe in a faith that touches every part of life—physical, mental, and spiritual.</p>
+        <p>Join us as we study the Word, serve our neighbors, and wait with hope for the return of our Savior.</p>
+        <a href="about.html" style="color: var(--primary-green); font-weight: 700; text-decoration: none;">Our Beliefs &amp; Mission →</a>
+    </div>
+</section>
+
+<!-- ============================================================
+     BRANCH CARDS
+============================================================ -->
+<section class="branch-feature">
     <div class="branch-card-interactive">
         <div class="branch-image" style="background-image: url('brits-branch.jpg');">
             <div class="branch-tag">Our Branch</div>
@@ -953,14 +765,15 @@
             <h3>Brits SDA Branch</h3>
             <p>Serving the community in the heart of Brits.</p>
             <ul class="branch-details">
-                <li> Location: Kerk street, Elangeni College, Brits</li>
-                <li> Saturdays @ 09:00 AM</li>
+                <li>Location: Kerk Street, Elangeni College, Brits</li>
+                <li>Saturdays @ 09:00 AM</li>
             </ul>
             <a href="brits.html" class="visit-branch-btn">View Brits Site →</a>
         </div>
     </div>
 </section>
-     <section class="branch-feature">
+
+<section class="branch-feature">
     <div class="branch-card-interactive">
         <div class="branch-image" style="background-image: url('titli2.jpeg');">
             <div class="branch-tag">Our New Branch</div>
@@ -969,81 +782,88 @@
             <h3>Thetele SDA Branch</h3>
             <p>Serving the community in the heart of Mothotlung Thetele.</p>
             <ul class="branch-details">
-                <li>Location: Church Street, Thtele</li>
-                <li> Saturdays @ 09:00 AM</li>
+                <li>Location: Church Street, Thetele</li>
+                <li>Saturdays @ 09:00 AM</li>
             </ul>
             <a href="titili.html" class="visit-branch-btn">View Thetele Site →</a>
         </div>
     </div>
 </section>
-    <section class="features">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Explore Our Church</h2>
-        <div class="feature-grid">
-            <div class="f-card">
-    <div class="f-card-content">
-        <i>&#128249;</i>
-        <h3>Watch Sermons</h3>
-        <p>Catch up on our latest message or join our live stream every Sabbath morning.</p>
-        <a href="media.html" class="card-btn">Watch Now →</a>
-    </div>
-</div>
-           <div class="f-card">
-    <div class="f-card-content">
-        <i>&#128101;</i>
-        <h3>Get Involved</h3>
-        <p>From Pathfinders to Community Service, find a place where you can grow and serve.</p>
-        <a href="ministries.html" class="card-btn service-btn">Join a Ministry →</a>
-    </div>
-</div>
-           <div class="f-card">
-    <div class="f-card-content">
-        <i>&#10013;</i>
-        <h3>Prayer Support</h3>
-        <p>Life is hard, but you don't have to walk alone. Let us lift you up in prayer.</p>
-        <a href="connect.html" class="card-btn prayer-btn">Request Prayer ♡</a>
-    </div>
-</div>
-            <div class="f-card">
-    <div class="f-card-content">
-        <i>&#10084;</i>
-        <h3>Donations</h3>
-        <p>Donate to the church to help us grow and spend the Everlasting Gospel.</p>
-        <a href="give.html" class="card-btn service-btn">Donate →</a>
-    </div>
-</div>
-            <div class="f-card">
-    <div class="f-card-content">
-        <i>&#128172;</i>
-        <h3>Need Direct Support</h3>
-        <p>Do you need any support or you have any questions in mind, you can send the elder.</p>
-        <a href="support.html" class="card-btn service-btn">Support →</a>
-    </div>
-</div>
-            <div class="f-card">
-    <div class="f-card-content">
-        <i class="fa-solid fa-image"></i>
-        <h3>Gallery</h3>
-        <p>Visit our Gallery.</p>
-        <a href="gallery.html" class="card-btn service-btn">Visit →</a>
-    </div>
-</div>
-</div>
-        </div>
 
-        <section class="global-links">
-    <div class="links-container">
-        <h2>Our Global Family</h2>
-        <div class="button-row">
-            <a href="https://www.adventist.org" target="_blank" class="gc-btn">General Conference</a>
-            <a href="https://toc.adventist.org" target="_blank" class="toc-btn">Trans-Orange Conference</a>
-            <a href="brits.html" class="gc-btn">Brits</a>
-            <a href="titili.html" class="toc-btn">Thetele</a>
+<!-- ============================================================
+     FEATURE CARDS
+============================================================ -->
+<section class="features">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Explore Our Church</h2>
+    <div class="feature-grid">
+        <div class="f-card">
+            <div class="f-card-content">
+                <i>&#128249;</i>
+                <h3>Watch Sermons</h3>
+                <p>Catch up on our latest message or join our live stream every Sabbath morning.</p>
+                <a href="media.html" class="card-btn">Watch Now →</a>
+            </div>
+        </div>
+        <div class="f-card">
+            <div class="f-card-content">
+                <i>&#128101;</i>
+                <h3>Get Involved</h3>
+                <p>From Pathfinders to Community Service, find a place where you can grow and serve.</p>
+                <a href="ministries.html" class="card-btn service-btn">Join a Ministry →</a>
+            </div>
+        </div>
+        <div class="f-card">
+            <div class="f-card-content">
+                <i>&#10013;</i>
+                <h3>Prayer Support</h3>
+                <p>Life is hard, but you don't have to walk alone. Let us lift you up in prayer.</p>
+                <a href="connect.html" class="card-btn prayer-btn">Request Prayer ♡</a>
+            </div>
+        </div>
+        <div class="f-card">
+            <div class="f-card-content">
+                <i>&#10084;</i>
+                <h3>Donations</h3>
+                <p>Donate to the church to help us grow and share the Everlasting Gospel.</p>
+                <a href="give.html" class="card-btn service-btn">Donate →</a>
+            </div>
+        </div>
+        <div class="f-card">
+            <div class="f-card-content">
+                <i>&#128172;</i>
+                <h3>Need Direct Support</h3>
+                <p>Do you need any support or have questions? You can contact the elder directly.</p>
+                <a href="support.html" class="card-btn service-btn">Support →</a>
+            </div>
+        </div>
+        <div class="f-card">
+            <div class="f-card-content">
+                <i class="fa-solid fa-image"></i>
+                <h3>Gallery</h3>
+                <p>Visit our Gallery and see what God is doing among us.</p>
+                <a href="gallery.html" class="card-btn service-btn">Visit →</a>
+            </div>
         </div>
     </div>
-</section>
+
+    <!-- GLOBAL LINKS sits inside .features -->
+    <section class="global-links">
+        <div class="links-container">
+            <h2>Our Global Family</h2>
+            <div class="button-row">
+                <a href="https://www.adventist.org" target="_blank" class="gc-btn">General Conference</a>
+                <a href="https://toc.adventist.org" target="_blank" class="toc-btn">Trans-Orange Conference</a>
+                <a href="brits.html" class="gc-btn">Brits</a>
+                <a href="titili.html" class="toc-btn">Thetele</a>
+            </div>
+        </div>
     </section>
+</section>
 
-    <section class="index-faq">
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section class="index-faq">
     <div class="faq-container">
         <h2>Frequently Asked Questions</h2>
 
@@ -1084,15 +904,15 @@
         </div>
 
         <div class="faq-item">
-    <details>
-        <summary>How can I get involved in community outreach?</summary>
-        <div class="faq-content">
-            We have various outreach programs including food distribution and health expos. You can visit our 
-            <a href="ministries/outreach.html" style="color: var(--primary-green, #4A7C59); font-weight: 600; text-decoration: underline;">Community Outreach</a> 
-            page or fill out the contact form to volunteer.
+            <details>
+                <summary>How can I get involved in community outreach?</summary>
+                <div class="faq-content">
+                    We have various outreach programs including food distribution and health expos. You can visit our
+                    <a href="ministries/outreach.html" style="color: var(--primary-green); font-weight: 600; text-decoration: underline;">Community Outreach</a>
+                    page or fill out the contact form to volunteer.
+                </div>
+            </details>
         </div>
-    </details>
-</div>
 
         <div class="faq-item">
             <details>
@@ -1100,21 +920,23 @@
                 <div class="faq-content">
                     You can reach our Prayer Line directly at <strong>+27 83 568 1837</strong> or use the contact form on our website to submit a prayer request.
                 </div>
-                  </details>
-                </div>
-                <div style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #ddd;">
-                 <p style="color: #666; margin-bottom: 15px;">Still have questions that weren't answered here?</p>
-                 <a href="support.html" class="btn-support">Visit Our Support Center</a>
-                </div>
+            </details>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #ddd;">
+            <p style="color: #666; margin-bottom: 15px;">Still have questions that weren't answered here?</p>
+            <a href="support.html" class="btn-support">Visit Our Support Center</a>
         </div>
     </div>
 </section>
 
-    
-  <footer class="site-footer">
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="site-footer">
     <div class="footer-content">
         <div class="footer-column">
-            <h3 class="footer-logo">Mothotlung  Seventh-day Adventist Church</h3>
+            <h3 class="footer-logo">Mothotlung Seventh-day Adventist Church</h3>
             <p class="footer-tagline">A Seventh-day Adventist community growing in grace and waiting in hope.</p>
             <div class="social-icons">
                 <a href="https://m.facebook.com/mothotlungsda/">FB</a>
@@ -1123,25 +945,14 @@
             </div>
         </div>
 
+        <div class="footer-column">
+            <h4>Contact Us</h4>
+            <ul class="footer-links">
+                <li><a href="tel:+27723615540"><strong>Church Clerk:</strong> +27 72 361 5540</a></li>
+                <li><a href="tel:+27723227621"><strong>Church Elder:</strong> +27 72 322 7621</a></li>
+            </ul>
+        </div>
 
-
-
-<div class="footer-column">
-    <h4>Contact Us</h4>
-    <ul class="footer-links">
-        <li>
-            <a href="tel:+27723615540">
-                <strong>Church Clerk:</strong> +27 72 361 5540
-            </a>
-        </li>
-        <li>
-            <a href="tel:+27723227621">
-                <strong>Church Elder:</strong> +27 72 322 7621
-            </a>
-        </li>
-        
-    </ul>
-</div>
         <div class="footer-column">
             <h4>Quick Links</h4>
             <ul class="footer-links">
@@ -1157,7 +968,7 @@
         <div class="footer-column">
             <h4>Visit Us</h4>
             <p>Katakane St,<br>Mothutlung, Brits, North West, 0250</p>
-            <p><strong>Saturdays:</strong> 9:30 AM & 11:00 AM</p>
+            <p><strong>Saturdays:</strong> 9:30 AM &amp; 11:00 AM</p>
         </div>
     </div>
 
@@ -1166,260 +977,98 @@
             &copy; 2026 Mothotlung Seventh-day Adventist Church. All Rights Reserved.
         </div>
         <div class="credits">
-    &bull; Made by 
-    <a href="https://wacxdigital.rf.gd" target="_blank" class="credit-brand">WacxDigital</a> 
-    &amp; Leetec Solutions
-</div>
+            &bull; Made by
+            <a href="https://wacxdigital.rf.gd" target="_blank" class="credit-brand">WacxDigital</a>
+            &amp; Leetec Solutions
+        </div>
     </div>
 </footer>
 
 <style>
-    .credit-brand {
-    color: #00bfff;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.credit-brand:hover {
-    text-decoration: underline;
-}
-    /* --- FOOTER STYLES --- */
+    /* ---- FOOTER STYLES ---- */
     .site-footer {
-        background-color: #1b362a; /* Slightly darker than primary green for depth */
+        background-color: #1b362a;
         color: #ffffff;
         padding: 80px 8% 30px;
         font-family: 'Montserrat', sans-serif;
     }
-
     .footer-content {
         display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
         gap: 50px;
         max-width: 1200px;
         margin: 0 auto;
         padding-bottom: 50px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
     .footer-logo {
         font-family: 'Playfair Display', serif;
         font-size: 1.8rem;
         color: var(--accent-gold);
         margin-bottom: 15px;
     }
-
-    .footer-tagline {
-        opacity: 0.8;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        max-width: 300px;
-    }
-
-    .footer-column h4 {
-        color: var(--accent-gold);
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 2px;
-        margin-bottom: 25px;
-    }
-
-    .footer-links {
-        list-style: none;
-        padding: 0;
-    }
-
-    .footer-links li {
-        margin-bottom: 12px;
-    }
-
-    .footer-links a {
-        color: white;
-        text-decoration: none;
-        opacity: 0.7;
-        transition: 0.3s;
-        font-size: 0.9rem;
-    }
-
-    .footer-links a:hover {
-        opacity: 1;
-        padding-left: 5px;
-        color: var(--accent-gold);
-    }
-
-    .social-icons a {
-        display: inline-block;
-        margin-right: 15px;
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        opacity: 0.8;
-    }
-
-    /* --- CREDITS BAR --- */
+    .footer-tagline { opacity: 0.8; font-size: 0.95rem; line-height: 1.6; max-width: 300px; }
+    .footer-column h4 { color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 25px; }
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a { color: white; text-decoration: none; opacity: 0.7; transition: 0.3s; font-size: 0.9rem; }
+    .footer-links a:hover { opacity: 1; padding-left: 5px; color: var(--accent-gold); }
+    .social-icons a { display: inline-block; margin-right: 15px; color: white; text-decoration: none; font-weight: bold; opacity: 0.8; }
     .footer-bottom {
-        max-width: 1200px;
-        margin: 30px auto 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.8rem;
-        opacity: 0.6;
+        max-width: 1200px; margin: 30px auto 0;
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: 0.8rem; opacity: 0.6;
     }
-
-    .credit-brand {
-        font-weight: 700;
-        color: var(--accent-gold);
-        letter-spacing: 0.5px;
-    }
-
-    /* Responsive */
+    .credit-brand { font-weight: 700; color: #00bfff; letter-spacing: 0.5px; text-decoration: none; }
+    .credit-brand:hover { text-decoration: underline; }
     @media (max-width: 850px) {
-        .footer-content {
-            grid-template-columns: 1fr;
-            text-align: center;
-        }
-        .footer-tagline {
-            margin: 0 auto;
-        }
-        .footer-bottom {
-            flex-direction: column;
-            gap: 15px;
-            text-align: center;
-        }
+        .footer-content { grid-template-columns: 1fr; text-align: center; }
+        .footer-tagline { margin: 0 auto; }
+        .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
     }
 </style>
-<script>
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
 
-    hamburger.addEventListener('click', () => {
-        // Toggle the "active" class on both the icon and the links
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    // Close menu when a link is clicked (useful for one-page sites)
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-        });
-    });
-    const backToTopBtn = document.getElementById('backToTop');
-
-// Show the button when the user scrolls down 300px
-window.onscroll = function() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        backToTopBtn.style.display = "block";
-    } else {
-        backToTopBtn.style.display = "none";
-    }
-};
-
-// When the user clicks the button, scroll to the top smoothly
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-document.addEventListener("DOMContentLoaded", function() {
-    const banner = document.getElementById("cookieBanner");
-    const acceptBtn = document.getElementById("acceptCookies");
-
-    // Check if user has already accepted
-    if (!localStorage.getItem("cookiesAccepted")) {
-        // Show banner after 2 seconds
-        setTimeout(() => {
-            banner.classList.add("show");
-        }, 2000);
-    }
-
-    acceptBtn.addEventListener("click", () => {
-        // Set item in local storage
-        localStorage.setItem("cookiesAccepted", "true");
-        // Hide banner
-        banner.classList.remove("show");
-    });
-});
-
-    function acceptCookies() {
-    localStorage.setItem('cookiesAccepted', 'true');
-    document.getElementById('cookie-banner').style.display = 'none';
-}
-
-window.onload = function() {
-    if (!localStorage.getItem('cookiesAccepted')) {
-        document.getElementById('cookie-banner').style.display = 'block';
-    }
-}
-    // Function to show the popup after 3 seconds
-    window.onload = function() {
-        setTimeout(function() {
-            // Check if user has already closed it in this session
-            if (!sessionStorage.getItem('popupClosed')) {
-                document.getElementById('media-popup').style.display = 'flex';
-            }
-        }, 3000); // 3000ms = 3 seconds delay
-    };
-
-    // Function to close the popup
-    function closePopup() {
-        document.getElementById('media-popup').style.display = 'none';
-        // Remember that the user closed it
-        sessionStorage.setItem('popupClosed', 'true');
-    }
-
-</script>
-
-    <div id="cookie-banner">
+<!-- ============================================================
+     COOKIE BANNER
+============================================================ -->
+<div id="cookie-banner">
     <p>
-        We use cookies to ensure you get the best experience at Mothutlung SDA Church online. 
+        We use cookies to ensure you get the best experience at Mothutlung SDA Church online.
         <a href="privacy.html" class="cookie-policy-link">Learn how we protect your data.</a>
     </p>
-    <button class="cookie-btn" onclick="acceptCookies()">Accept & Close</button>
-</div>
-    <div class="floating-container">
-        
-  <a href="support.html" class="floating-button support-page" aria-label="Support Center">
-    <svg viewBox="0 0 512 512" width="24" height="24" fill="currentColor">
-      <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
-    </svg>
-  </a>
-  <a href="https://wa.me/27723227621" class="floating-button whatsapp" target="_blank" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 448 512" width="28" height="28" fill="currentColor">
-      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.4 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.2-16.4-14.6-27.4-32.7-30.6-38.3-3.2-5.6-.3-8.6 2.4-11.5 2.5-2.6 5.6-6.5 8.3-9.8 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.8-1.4-2.8-12.4-29.8-17-40.7-4.5-10.7-9-9.2-12.4-9.4h-10.6c-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 34.9 2.2 10.6-1.5 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-    </svg>
-  </a>
-  
-  <a href="mailto:mothutlung@toc.adventist.org" class="floating-button email" aria-label="Send Email">
-    <svg viewBox="0 0 512 512" width="24" height="24" fill="currentColor">
-      <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/>
-    </svg>
-  </a>
+    <button class="cookie-btn" onclick="acceptCookies()">Accept &amp; Close</button>
 </div>
 
-
-    <!-- ============================================================
-  MOTHOTLUNG SDA CHURCH – AI CHATBOT EMBED SNIPPET
-  
-  HOW TO USE:
-  Copy EVERYTHING below and paste it just before the </body> 
-  closing tag in your index.html (and any other page you want it on).
-  
-  It will appear as a gold chat bubble in the bottom-left corner.
-  Clicking it opens the full chat panel.
+<!-- ============================================================
+     FLOATING ACTION BUTTONS (right)
 ============================================================ -->
+<div class="floating-container">
+    <a href="support.html" class="floating-button support-page" aria-label="Support Center">
+        <svg viewBox="0 0 512 512" width="24" height="24" fill="currentColor">
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+        </svg>
+    </a>
+    <a href="https://wa.me/27723227621" class="floating-button whatsapp" target="_blank" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 448 512" width="28" height="28" fill="currentColor">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.4 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.2-16.4-14.6-27.4-32.7-30.6-38.3-3.2-5.6-.3-8.6 2.4-11.5 2.5-2.6 5.6-6.5 8.3-9.8 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.8-1.4-2.8-12.4-29.8-17-40.7-4.5-10.7-9-9.2-12.4-9.4h-10.6c-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 34.9 2.2 10.6-1.5 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+    </a>
+    <a href="mailto:mothutlung@toc.adventist.org" class="floating-button email" aria-label="Send Email">
+        <svg viewBox="0 0 512 512" width="24" height="24" fill="currentColor">
+            <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/>
+        </svg>
+    </a>
+</div>
 
-<!-- ① CHATBOT STYLES -->
+<!-- ============================================================
+     AI CHATBOT
+============================================================ -->
 <style>
-  /* --- Floating Trigger Button --- */
   .chat-trigger {
     position: fixed;
-    bottom: 100px; /* sits above your existing WhatsApp/email buttons */
+    bottom: 100px;
     left: 25px;
-    width: 58px;
-    height: 58px;
+    width: 58px; height: 58px;
     background: linear-gradient(135deg, #2E5C48, #1b362a);
     border-radius: 50%;
     display: flex;
@@ -1432,358 +1081,225 @@ window.onload = function() {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: chatPulse 3s ease infinite;
   }
-
-  .chat-trigger:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(46,92,72,0.5);
-  }
-
+  .chat-trigger:hover { transform: scale(1.1); box-shadow: 0 8px 25px rgba(46,92,72,0.5); }
   @keyframes chatPulse {
     0%,100% { box-shadow: 0 6px 20px rgba(46,92,72,0.4); }
     50%      { box-shadow: 0 6px 28px rgba(197,160,89,0.5); }
   }
-
-  .chat-trigger svg { width: 26px; height: 26px; fill: #C5A059; }
-
-  /* Tooltip label */
   .chat-trigger::after {
     content: 'Ask AI';
-    position: absolute;
-    left: 68px;
-    background: #1b362a;
-    color: #C5A059;
+    position: absolute; left: 68px;
+    background: #1b362a; color: #C5A059;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
+    font-size: 0.72rem; font-weight: 700;
     letter-spacing: 0.5px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
+    padding: 5px 10px; border-radius: 20px;
+    white-space: nowrap; opacity: 0;
+    transition: opacity 0.2s; pointer-events: none;
     border: 1px solid #C5A059;
   }
-
   .chat-trigger:hover::after { opacity: 1; }
 
-  /* --- Chat Panel Overlay --- */
   .chat-panel-overlay {
-    position: fixed;
-    bottom: 0; left: 0; right: 0; top: 0;
+    position: fixed; bottom: 0; left: 0; right: 0; top: 0;
     background: rgba(0,0,0,0.4);
     z-index: 9991;
-    display: none;
-    align-items: flex-end;
-    justify-content: flex-start;
+    display: none; align-items: flex-end; justify-content: flex-start;
     padding: 0 0 20px 20px;
     backdrop-filter: blur(2px);
   }
-
   .chat-panel-overlay.open { display: flex; }
 
-  /* --- Chat Panel Card --- */
   .chat-panel {
-    width: 370px;
-    height: 560px;
-    background: #fff;
-    border-radius: 20px;
+    width: 370px; height: 560px;
+    background: #fff; border-radius: 20px;
     box-shadow: 0 24px 60px rgba(46,92,72,0.25);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    display: flex; flex-direction: column; overflow: hidden;
     animation: panelSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
     font-family: 'Montserrat', sans-serif;
   }
-
   @keyframes panelSlideUp {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to   { opacity: 1; transform: translateY(0)   scale(1);    }
+    from { opacity:0; transform:translateY(30px) scale(0.95); }
+    to   { opacity:1; transform:translateY(0)   scale(1); }
   }
 
-  /* Panel Header */
   .cp-header {
     background: linear-gradient(135deg, #1b362a 0%, #2E5C48 100%);
     padding: 16px 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-    flex-shrink: 0;
+    display: flex; align-items: center; gap: 12px;
+    position: relative; flex-shrink: 0;
   }
-
   .cp-header::before {
-    content: '';
-    position: absolute;
+    content: ''; position: absolute;
     top: -20px; right: -20px;
     width: 90px; height: 90px;
-    background: rgba(197,160,89,0.1);
-    border-radius: 50%;
+    background: rgba(197,160,89,0.1); border-radius: 50%;
   }
-
   .cp-avatar {
-    width: 40px; height: 40px;
-    background: #C5A059;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
+    width: 40px; height: 40px; background: #C5A059;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0; position: relative; z-index: 1;
     border: 2px solid rgba(197,160,89,0.4);
   }
-
   .cp-header-text { position: relative; z-index: 1; flex: 1; }
   .cp-header-text h4 { color: #fff; font-size: 0.9rem; font-weight: 700; margin: 0; }
-  .cp-header-text span {
-    color: #dfc48a;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 2px;
-  }
-
-  .cp-status-dot {
-    width: 6px; height: 6px;
-    background: #4ade80;
-    border-radius: 50%;
-    display: inline-block;
-    animation: cpBlink 2s ease infinite;
-  }
-
+  .cp-header-text span { color: #dfc48a; font-size: 0.7rem; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .cp-status-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; display: inline-block; animation: cpBlink 2s ease infinite; }
   @keyframes cpBlink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-
   .cp-close {
-    background: rgba(255,255,255,0.15);
-    border: none;
-    color: #dfc48a;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex; align-items: center; justify-content: center;
-    position: relative; z-index: 1;
-    transition: background 0.2s;
-    flex-shrink: 0;
+    background: rgba(255,255,255,0.15); border: none; color: #dfc48a;
+    width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+    font-size: 1rem; display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1; transition: background 0.2s; flex-shrink: 0;
   }
-
   .cp-close:hover { background: rgba(255,255,255,0.3); }
 
-  /* Messages */
   .cp-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    scroll-behavior: smooth;
+    flex: 1; overflow-y: auto; padding: 14px;
+    display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;
   }
-
   .cp-messages::-webkit-scrollbar { width: 3px; }
   .cp-messages::-webkit-scrollbar-thumb { background: #d4e3dd; border-radius: 3px; }
 
   .cp-msg-row { display: flex; gap: 7px; animation: cpSlideUp 0.25s ease; }
   .cp-msg-row.user { flex-direction: row-reverse; }
+  @keyframes cpSlideUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-  @keyframes cpSlideUp {
-    from { opacity:0; transform:translateY(6px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-
-  .cp-av {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
+  .cp-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
   .cp-av.bot  { background: #2E5C48; color: #C5A059; }
   .cp-av.user { background: #C5A059; color: #1b362a; }
 
-  .cp-bubble {
-    max-width: 80%;
-    padding: 9px 13px;
-    border-radius: 16px;
-    font-size: 0.82rem;
-    line-height: 1.55;
-    color: #2d3436;
-  }
-
+  .cp-bubble { max-width: 80%; padding: 9px 13px; border-radius: 16px; font-size: 0.82rem; line-height: 1.55; color: #2d3436; }
   .cp-bubble.bot  { background: #F5F1EA; border-bottom-left-radius: 3px; }
   .cp-bubble.user { background: #2E5C48; color: #fff; border-bottom-right-radius: 3px; }
 
-  /* Typing dots */
   .cp-typing { display: flex; gap: 4px; align-items: center; padding: 3px 0; }
-  .cp-typing span {
-    width: 6px; height: 6px;
-    background: #6b7a74;
-    border-radius: 50%;
-    animation: cpBounce 1.2s ease infinite;
-  }
+  .cp-typing span { width: 6px; height: 6px; background: #6b7a74; border-radius: 50%; animation: cpBounce 1.2s ease infinite; }
   .cp-typing span:nth-child(2) { animation-delay: 0.18s; }
   .cp-typing span:nth-child(3) { animation-delay: 0.36s; }
+  @keyframes cpBounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-5px); } }
 
-  @keyframes cpBounce {
-    0%,60%,100% { transform:translateY(0); }
-    30% { transform:translateY(-5px); }
-  }
-
-  /* Suggestions */
-  .cp-suggestions {
-    padding: 6px 12px 4px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
+  .cp-suggestions { padding: 6px 12px 4px; display: flex; flex-wrap: wrap; gap: 5px; }
   .cp-chip {
-    background: #F5F1EA;
-    border: 1px solid #d4e3dd;
-    color: #2E5C48;
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 5px 11px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Montserrat', sans-serif;
-    white-space: nowrap;
+    background: #F5F1EA; border: 1px solid #d4e3dd; color: #2E5C48;
+    font-size: 0.72rem; font-weight: 600; padding: 5px 11px; border-radius: 50px;
+    cursor: pointer; transition: all 0.2s; font-family: 'Montserrat', sans-serif; white-space: nowrap;
   }
-
   .cp-chip:hover { background: #2E5C48; color: #fff; border-color: #2E5C48; }
 
-  /* Input */
-  .cp-input-bar {
-    padding: 10px 12px;
-    border-top: 1px solid #eef3f0;
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-  }
-
+  .cp-input-bar { padding: 10px 12px; border-top: 1px solid #eef3f0; display: flex; gap: 8px; align-items: flex-end; }
   .cp-input-bar textarea {
-    flex: 1;
-    resize: none;
-    border: 1.5px solid #d4e3dd;
-    border-radius: 12px;
-    padding: 9px 12px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.82rem;
-    color: #2d3436;
-    background: #F5F1EA;
-    outline: none;
-    min-height: 38px;
-    max-height: 90px;
-    line-height: 1.4;
-    transition: border-color 0.2s;
+    flex: 1; resize: none; border: 1.5px solid #d4e3dd; border-radius: 12px;
+    padding: 9px 12px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem;
+    color: #2d3436; background: #F5F1EA; outline: none;
+    min-height: 38px; max-height: 90px; line-height: 1.4; transition: border-color 0.2s;
   }
-
   .cp-input-bar textarea:focus { border-color: #2E5C48; background: #fff; }
   .cp-input-bar textarea::placeholder { color: #9fb5ae; }
-
   .cp-send {
-    width: 38px; height: 38px;
-    background: #2E5C48;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
+    width: 38px; height: 38px; background: #2E5C48; color: #fff; border: none;
+    border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
   }
-
   .cp-send:hover { background: #C5A059; transform: scale(1.05); }
   .cp-send:disabled { background: #c8d9d3; cursor: not-allowed; transform: none; }
   .cp-send svg { width: 16px; height: 16px; fill: currentColor; }
+  .cp-footer { text-align: center; font-size: 0.62rem; color: #9fb5ae; padding: 5px; border-top: 1px solid #f0f5f3; flex-shrink: 0; }
 
-  .cp-footer {
-    text-align: center;
-    font-size: 0.62rem;
-    color: #9fb5ae;
-    padding: 5px;
-    border-top: 1px solid #f0f5f3;
-    flex-shrink: 0;
-  }
-
-  /* Responsive: full-screen on small phones */
   @media (max-width: 420px) {
-    .chat-panel {
-      width: calc(100vw - 20px);
-      height: 80vh;
-    }
-    .chat-panel-overlay {
-      padding: 0 10px 10px 10px;
-    }
+    .chat-panel { width: calc(100vw - 20px); height: 80vh; }
+    .chat-panel-overlay { padding: 0 10px 10px 10px; }
   }
 </style>
 
-<!-- ② CHATBOT HTML -->
-
 <button class="chat-trigger" onclick="toggleChatPanel()" aria-label="Open Church AI Assistant">
-  <i class="fa-solid fa-robot" style="font-size:1.4rem; color:#C5A059;"></i>
+    <i class="fa-solid fa-robot" style="font-size:1.4rem; color:#C5A059;"></i>
 </button>
 
-<!-- Chat panel (hidden by default) -->
 <div class="chat-panel-overlay" id="chatPanelOverlay" onclick="handleOverlayClick(event)">
-  <div class="chat-panel" id="chatPanel">
-
-    <!-- Header -->
-    <div class="cp-header">
-      <div class="cp-avatar">✦</div>
-      <div class="cp-header-text">
-        <h4>Mothotlung Church Assistant</h4>
-        <span><span class="cp-status-dot"></span> Online – here to help</span>
-      </div>
-      <button class="cp-close" onclick="toggleChatPanel()">✕</button>
-    </div>
-
-    <!-- Messages -->
-    <div class="cp-messages" id="cpMessages">
-      <div class="cp-msg-row bot">
-        <div class="cp-av bot">✦</div>
-        <div class="cp-bubble bot">
-          Hi! 🙏 I'm your <strong>Mothotlung SDA Church</strong> assistant. Ask me about services, ministries, giving, beliefs, or how to get involved!
+    <div class="chat-panel" id="chatPanel">
+        <div class="cp-header">
+            <div class="cp-avatar">✦</div>
+            <div class="cp-header-text">
+                <h4>Mothotlung Church Assistant</h4>
+                <span><span class="cp-status-dot"></span> Online – here to help</span>
+            </div>
+            <button class="cp-close" onclick="toggleChatPanel()">✕</button>
         </div>
-      </div>
+        <div class="cp-messages" id="cpMessages">
+            <div class="cp-msg-row bot">
+                <div class="cp-av bot">✦</div>
+                <div class="cp-bubble bot">
+                    Hi! 🙏 I'm your <strong>Mothotlung SDA Church</strong> assistant. Ask me about services, ministries, giving, beliefs, or how to get involved!
+                </div>
+            </div>
+        </div>
+        <div class="cp-suggestions" id="cpSuggestions">
+            <button class="cp-chip" onclick="cpSend('What time are your services?')">⏰ Services</button>
+            <button class="cp-chip" onclick="cpSend('How do I get baptised?')">✝️ Baptism</button>
+            <button class="cp-chip" onclick="cpSend('How can I donate to the church?')">💛 Give</button>
+            <button class="cp-chip" onclick="cpSend('What ministries can I join?')">🤝 Ministries</button>
+            <button class="cp-chip" onclick="cpSend('How can I request prayer?')">🙏 Prayer</button>
+        </div>
+        <div class="cp-input-bar">
+            <textarea id="cpInput" placeholder="Ask me anything…" rows="1" onkeydown="cpHandleKey(event)" oninput="cpResize(this)"></textarea>
+            <button class="cp-send" id="cpSendBtn" onclick="cpSend()" title="Send">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+        <div class="cp-footer">Made By WacxDigital(Lesley Tsoka) · Mothotlung SDA Church © 2026</div>
     </div>
-
-    <!-- Quick chips -->
-    <div class="cp-suggestions" id="cpSuggestions">
-      <button class="cp-chip" onclick="cpSend('What time are your services?')">⏰ Services</button>
-      <button class="cp-chip" onclick="cpSend('How do I get baptised?')">✝️ Baptism</button>
-      <button class="cp-chip" onclick="cpSend('How can I donate to the church?')">💛 Give</button>
-      <button class="cp-chip" onclick="cpSend('What ministries can I join?')">🤝 Ministries</button>
-      <button class="cp-chip" onclick="cpSend('How can I request prayer?')">🙏 Prayer</button>
-    </div>
-
-    <!-- Input -->
-    <div class="cp-input-bar">
-      <textarea
-        id="cpInput"
-        placeholder="Ask me anything…"
-        rows="1"
-        onkeydown="cpHandleKey(event)"
-        oninput="cpResize(this)"
-      ></textarea>
-      <button class="cp-send" id="cpSendBtn" onclick="cpSend()" title="Send">
-        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </button>
-    </div>
-
-    <div class="cp-footer">Made By WacxDigital(Lesley Tsoka) · Mothotlung SDA Church © 2026</div>
-  </div>
 </div>
 
-<!-- ③ CHATBOT SCRIPT -->
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
 <script>
-(function() {
-  /* ---------- SYSTEM PROMPT ---------- */
-  const CP_SYSTEM = `You are a warm, helpful, and knowledgeable AI assistant for the Mothotlung Seventh-day Adventist Church in South Africa. You represent the church with grace, kindness, and genuine hospitality.
+    /* --- Hamburger --- */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+
+    /* --- Cookie --- */
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        document.getElementById('cookie-banner').style.display = 'none';
+    }
+
+    /* --- Popup --- */
+    window.onload = function () {
+        // Cookie banner
+        if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        }
+        // Popup
+        setTimeout(function () {
+            if (!sessionStorage.getItem('popupClosed')) {
+                document.getElementById('media-popup').style.display = 'flex';
+            }
+        }, 3000);
+    };
+
+    function closePopup() {
+        document.getElementById('media-popup').style.display = 'none';
+        sessionStorage.setItem('popupClosed', 'true');
+    }
+</script>
+
+<script>
+/* --- AI Chatbot --- */
+(function () {
+    const CP_SYSTEM = `You are a warm, helpful, and knowledgeable AI assistant for the Mothotlung Seventh-day Adventist Church in South Africa. You represent the church with grace, kindness, and genuine hospitality.
 
 CHURCH DETAILS:
 - Full name: Mothotlung Seventh-day Adventist Church
@@ -1818,209 +1334,102 @@ CORE BELIEFS: Bible is God's Word | Trinity | Saturday Sabbath (sunset Fri – s
 
 TONE: Warm, pastoral, welcoming. Empathise first for sensitive topics. Reply in user's language. Never be dismissive.`;
 
-  /* ---------- STATE ---------- */
-  const cpHistory = [];
-  let cpLoading = false;
-  let panelOpen = false;
+    const cpHistory = [];
+    let cpLoading = false;
+    let panelOpen  = false;
 
-  /* ---------- PANEL TOGGLE ---------- */
-  window.toggleChatPanel = function() {
-    panelOpen = !panelOpen;
-    const overlay = document.getElementById('chatPanelOverlay');
-    overlay.classList.toggle('open', panelOpen);
-    if (panelOpen) {
-      setTimeout(() => document.getElementById('cpInput').focus(), 300);
+    window.toggleChatPanel = function () {
+        panelOpen = !panelOpen;
+        document.getElementById('chatPanelOverlay').classList.toggle('open', panelOpen);
+        if (panelOpen) setTimeout(() => document.getElementById('cpInput').focus(), 300);
+    };
+
+    window.handleOverlayClick = function (e) {
+        if (e.target === document.getElementById('chatPanelOverlay')) toggleChatPanel();
+    };
+
+    function cpAppend(role, text) {
+        const area = document.getElementById('cpMessages');
+        const row = document.createElement('div');
+        row.className = `cp-msg-row ${role}`;
+        const av = document.createElement('div');
+        av.className = `cp-av ${role}`;
+        av.textContent = role === 'bot' ? '✦' : '👤';
+        const bubble = document.createElement('div');
+        bubble.className = `cp-bubble ${role}`;
+        bubble.innerHTML = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n/g, '<br>');
+        row.appendChild(av);
+        row.appendChild(bubble);
+        area.appendChild(row);
+        area.scrollTop = area.scrollHeight;
     }
-  };
 
-  window.handleOverlayClick = function(e) {
-    if (e.target === document.getElementById('chatPanelOverlay')) {
-      toggleChatPanel();
+    function cpShowTyping() {
+        const area = document.getElementById('cpMessages');
+        const row = document.createElement('div');
+        row.className = 'cp-msg-row bot'; row.id = 'cpTyping';
+        const av = document.createElement('div'); av.className = 'cp-av bot'; av.textContent = '✦';
+        const bubble = document.createElement('div'); bubble.className = 'cp-bubble bot';
+        bubble.innerHTML = '<div class="cp-typing"><span></span><span></span><span></span></div>';
+        row.appendChild(av); row.appendChild(bubble);
+        area.appendChild(row); area.scrollTop = area.scrollHeight;
     }
-  };
-
-  /* ---------- RENDER HELPERS ---------- */
-  function cpAppend(role, text) {
-    const area = document.getElementById('cpMessages');
-    const row = document.createElement('div');
-    row.className = `cp-msg-row ${role}`;
-
-    const av = document.createElement('div');
-    av.className = `cp-av ${role}`;
-    av.textContent = role === 'bot' ? '✦' : '👤';
-
-    const bubble = document.createElement('div');
-    bubble.className = `cp-bubble ${role}`;
-    bubble.innerHTML = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\n/g, '<br>');
-
-    row.appendChild(av);
-    row.appendChild(bubble);
-    area.appendChild(row);
-    area.scrollTop = area.scrollHeight;
-  }
-
-  function cpShowTyping() {
-    const area = document.getElementById('cpMessages');
-    const row = document.createElement('div');
-    row.className = 'cp-msg-row bot';
-    row.id = 'cpTyping';
-    const av = document.createElement('div');
-    av.className = 'cp-av bot';
-    av.textContent = '✦';
-    const bubble = document.createElement('div');
-    bubble.className = 'cp-bubble bot';
-    bubble.innerHTML = '<div class="cp-typing"><span></span><span></span><span></span></div>';
-    row.appendChild(av);
-    row.appendChild(bubble);
-    area.appendChild(row);
-    area.scrollTop = area.scrollHeight;
-  }
-
-  function cpRemoveTyping() {
-    const t = document.getElementById('cpTyping');
-    if (t) t.remove();
-  }
-
-  function cpSetLoading(val) {
-    cpLoading = val;
-    document.getElementById('cpSendBtn').disabled = val;
-    document.getElementById('cpInput').disabled = val;
-  }
-
-  function cpHideSuggestions() {
-    const s = document.getElementById('cpSuggestions');
-    if (s) s.style.display = 'none';
-  }
-
-  /* ---------- SEND ---------- */
-  window.cpSend = async function(prefill) {
-    const input = document.getElementById('cpInput');
-    const text = (prefill || input.value).trim();
-    if (!text || cpLoading) return;
-
-    cpHideSuggestions();
-    cpAppend('user', text);
-    cpHistory.push({ role: 'user', content: text });
-
-    if (!prefill) { input.value = ''; cpResize(input); }
-    cpSetLoading(true);
-    cpShowTyping();
-
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: CP_SYSTEM,
-          messages: cpHistory
-        })
-      });
-
-      cpRemoveTyping();
-
-      if (!res.ok) throw new Error('Request failed');
-
-      const data = await res.json();
-      const reply = data.content?.find(b => b.type === 'text')?.text
-        || "I'm sorry, I couldn't get a response. Please try again.";
-
-      cpHistory.push({ role: 'assistant', content: reply });
-      cpAppend('bot', reply);
-
-    } catch (err) {
-      cpRemoveTyping();
-      cpAppend('bot', "Sorry, something went wrong. Please contact us directly at **+27 72 322 7621** 🙏");
-    } finally {
-      cpSetLoading(false);
+    function cpRemoveTyping() { const t = document.getElementById('cpTyping'); if (t) t.remove(); }
+    function cpSetLoading(val) {
+        cpLoading = val;
+        document.getElementById('cpSendBtn').disabled = val;
+        document.getElementById('cpInput').disabled = val;
     }
-  };
+    function cpHideSuggestions() { const s = document.getElementById('cpSuggestions'); if (s) s.style.display = 'none'; }
 
-  /* ---------- UI HELPERS ---------- */
-  window.cpHandleKey = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      cpSend();
-    }
-  };
+    window.cpSend = async function (prefill) {
+        const input = document.getElementById('cpInput');
+        const text  = (prefill || input.value).trim();
+        if (!text || cpLoading) return;
+        cpHideSuggestions();
+        cpAppend('user', text);
+        cpHistory.push({ role: 'user', content: text });
+        if (!prefill) { input.value = ''; cpResize(input); }
+        cpSetLoading(true);
+        cpShowTyping();
+        try {
+            const res = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model: 'claude-sonnet-4-20250514',
+                    max_tokens: 1000,
+                    system: CP_SYSTEM,
+                    messages: cpHistory
+                })
+            });
+            cpRemoveTyping();
+            if (!res.ok) throw new Error('Request failed');
+            const data  = await res.json();
+            const reply = data.content?.find(b => b.type === 'text')?.text
+                || "I'm sorry, I couldn't get a response. Please try again.";
+            cpHistory.push({ role: 'assistant', content: reply });
+            cpAppend('bot', reply);
+        } catch (err) {
+            cpRemoveTyping();
+            cpAppend('bot', "Sorry, something went wrong. Please contact us directly at **+27 72 322 7621** 🙏");
+        } finally {
+            cpSetLoading(false);
+        }
+    };
 
-  window.cpResize = function(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
+    window.cpHandleKey = function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); cpSend(); }
+    };
+    window.cpResize = function (el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+    };
 })();
 </script>
+
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
