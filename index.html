@@ -58,7 +58,11 @@
         /* --- HERO SECTION --- */
         .hero {
     /* 1. Set the height (100vh means 100% of the screen height) */
-    height: 100vh; 
+    height: 100vh;
+
+            .hero {
+    margin-top: 105px; /* accounts for nav + contact bar height */
+}
 
     /* 2. Add the dark overlay and your image */
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
@@ -790,7 +794,59 @@
     box-shadow: 0 4px 10px rgba(74, 124, 89, 0.2);
 }
 
-        
+     /* --- CONTACT INFO BAR --- */
+.contact-bar {
+    position: fixed;
+    top: 72px; /* sits flush under the nav */
+    left: 0;
+    width: 100%;
+    background: var(--primary-green);
+    z-index: 999;
+    padding: 7px 8%;
+    box-sizing: border-box;
+}
+
+.contact-bar-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+    flex-wrap: wrap;
+}
+
+.contact-bar a {
+    color: #f0e6d0;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+
+.contact-bar a i {
+    color: var(--accent-gold);
+    font-size: 0.75rem;
+}
+
+.contact-bar a:hover {
+    color: var(--accent-gold);
+}
+
+@media (max-width: 600px) {
+    .contact-bar {
+        top: 65px;
+        padding: 6px 4%;
+    }
+    .contact-bar-inner {
+        gap: 14px;
+        justify-content: center;
+    }
+    .contact-bar a {
+        font-size: 0.7rem;
+    }
+}   
     </style>
 </head>
 <body>
@@ -840,7 +896,20 @@
     </div>
 </nav>
 
-
+<!-- CONTACT INFO BAR -->
+<div class="contact-bar">
+    <div class="contact-bar-inner">
+        <a href="tel:+27723615540">
+            <i class="fa-solid fa-phone"></i> Clerk: +27 72 361 5540
+        </a>
+        <a href="tel:+27723227621">
+            <i class="fa-solid fa-phone"></i> Elder: +27 72 322 7621
+        </a>
+        <a href="mailto:mothutlung@toc.adventist.org">
+            <i class="fa-solid fa-envelope"></i> mothutlung@toc.adventist.org
+        </a>
+    </div>
+</div>
     <header class="hero">
         <div class="hero-content">
             <h1>Finding Peace in Jesus</h1>
