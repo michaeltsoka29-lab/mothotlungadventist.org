@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Word — SDA Bible App</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root[data-theme="dark"] {
+  --bg:        #0d1a14;
+  --bg2:       #132010;
+  --bg3:       #1a2d1f;
+  --surface:   #1e3527;
+  --surface2:  #243d2c;
+  --border:    rgba(197,160,89,0.18);
+  --gold:      #C5A059;
+  --gold2:     #e8c97a;
+  --green:     #2E5C48;
+  --green2:    #3d7a60;
+  --text:      #f0ead8;
+  --text2:     #b8a98a;
+  --text3:     #7a6a50;
+  --verse-bg:  rgba(197,160,89,0.06);
+  --shadow:    0 8px 32px rgba(0,0,0,0.5);
+}
+:root[data-theme="light"] {
+  --bg:        #faf7f0;
+  --bg2:       #f5f0e8;
+  --bg3:       #ede8dc;
+  --surface:   #ffffff;
+  --surface2:  #f8f4ec;
+  --border:    rgba(46,92,72,0.15);
+  --gold:      #a07830;
+  --gold2:     #c5a059;
+  --green:     #2E5C48;
+  --green2:    #3d7a60;
+  --text:      #1a2410;
+  --text2:     #4a5a40;
+  --text3:     #8a9a80;
+  --verse-bg:  rgba(46,92,72,0.04);
+  --shadow:    0 8px 32px rgba(0,0,0,0.1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(46,92,72,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(197,160,89,0.08) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── LAYOUT ── */
+.app { display: flex; height: 100vh; position: relative; z-index: 1; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 280px; min-width: 280px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transition: width 0.3s;
+}
+
+.sidebar-header {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--green) 0%, var(--bg3) 100%);
+}
+
+.app-logo {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+}
+.app-logo .cross {
+  width: 32px; height: 32px;
+  background: var(--gold);
+  clip-path: polygon(40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%);
+}
+.app-logo h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #fff; letter-spacing: 1px; }
+.app-subtitle { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; margin-left: 42px; }
+
+/* Nav Tabs */
+.nav-tabs {
+  display: flex; flex-direction: column;
+  padding: 12px 10px; gap: 2px;
+  overflow-y: auto; flex: 1;
+}
+.nav-tab {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: 10px;
+  cursor: pointer; transition: all 0.2s;
+  font-size: 0.82rem; font-weight: 500; color: var(--text2);
+  border: none; background: transparent; text-align: left; width: 100%;
+}
+.nav-tab i { width: 18px; font-size: 0.9rem; color: var(--text3); transition: color 0.2s; }
+.nav-tab:hover { background: var(--surface); color: var(--text); }
+.nav-tab:hover i { color: var(--gold); }
+.nav-tab.active { background: var(--surface); color: var(--gold); font-weight: 600; }
+.nav-tab.active i { color: var(--gold); }
+
+.nav-section-label {
+  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--text3); padding: 14px 14px 4px; font-weight: 600;
+}
+
+/* Sabbath Timer in sidebar */
+.sabbath-widget {
+  margin: 10px; padding: 14px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+  border: 1px solid rgba(197,160,89,0.3);
+}
+.sabbath-widget .sw-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+.sabbath-widget .sw-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: #fff; margin-bottom: 8px; }
+.sabbath-timer { display: flex; gap: 6px; }
+.st-unit { background: rgba(0,0,0,0.25); border-radius: 6px; padding: 6px 8px; text-align: center; flex: 1; }
+.st-unit .num { font-size: 1.1rem; font-weight: 700; color: var(--gold2); font-family: 'Montserrat', sans-serif; line-height: 1; }
+.st-unit .lbl { font-size: 0.5rem; text-transform: uppercase; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
+
+/* ── MAIN CONTENT ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Top Bar */
+.topbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.topbar-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); flex: 1; }
+
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 25px; padding: 8px 16px; flex: 1; max-width: 400px;
+}
+.search-bar input {
+  background: none; border: none; outline: none;
+  color: var(--text); font-family: 'Montserrat', sans-serif; font-size: 0.82rem; flex: 1;
+}
+.search-bar input::placeholder { color: var(--text3); }
+.search-bar i { color: var(--text3); font-size: 0.8rem; }
+
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text2); transition: all 0.2s; font-size: 0.9rem;
+}
+.icon-btn:hover { background: var(--green); color: var(--gold); border-color: var(--gold); }
+
+/* ── PANELS ── */
+.panel { display: none; flex: 1; overflow: hidden; }
+.panel.active { display: flex; flex-direction: column; }
+
+/* ── BIBLE READER ── */
+.reader-controls {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 24px; border-bottom: 1px solid var(--border);
+  background: var(--bg3); flex-shrink: 0; flex-wrap: wrap;
+}
+
+.select-styled {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); border-radius: 8px; padding: 8px 12px;
+  font-family: 'Montserrat', sans-serif; font-size: 0.82rem;
+  cursor: pointer; outline: none; transition: border-color 0.2s;
+}
+.select-styled:focus { border-color: var(--gold); }
+
+.nav-btn {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 8px; padding: 8px 14px;
+  cursor: pointer; font-size: 0.82rem; transition: all 0.2s;
+  font-family: 'Montserrat', sans-serif;
+}
+.nav-btn:hover { background: var(--green); color: white; border-color: var(--green); }
+
+.font-controls { display: flex; gap: 6px; margin-left: auto; }
+.font-btn {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 6px; width: 32px; height: 32px;
+  cursor: pointer; font-size: 0.75rem; transition: all 0.2s; font-weight: 700;
+}
+.font-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.bible-content {
+  flex: 1; overflow-y: auto; padding: 32px 40px;
+  scroll-behavior: smooth;
+}
+.bible-content::-webkit-scrollbar { width: 4px; }
+.bible-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.chapter-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; color: var(--gold);
+  margin-bottom: 8px; text-align: center;
+}
+.chapter-ref {
+  text-align: center; color: var(--text3); font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 32px;
+}
+
+.verse {
+  display: flex; gap: 14px; margin-bottom: 6px;
+  padding: 10px 12px; border-radius: 8px;
+  transition: background 0.2s; cursor: pointer;
+  animation: verseIn 0.4s ease both;
+}
+@keyframes verseIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.verse:hover { background: var(--verse-bg); }
+.verse.highlighted { background: rgba(197,160,89,0.12); border-left: 3px solid var(--gold); }
+.verse.bookmarked { background: rgba(46,92,72,0.15); }
+
+.verse-num {
+  font-size: 0.68rem; font-weight: 700; color: var(--gold);
+  min-width: 22px; padding-top: 4px; font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
+}
+.verse-text {
+  font-family: 'Lora', serif;
+  line-height: 1.85; color: var(--text); flex: 1;
+}
+
+.verse-actions {
+  display: none; gap: 4px; align-items: flex-start; padding-top: 2px;
+}
+.verse:hover .verse-actions { display: flex; }
+.va-btn {
+  background: none; border: none; color: var(--text3);
+  cursor: pointer; font-size: 0.75rem; padding: 4px; border-radius: 4px;
+  transition: color 0.2s;
+}
+.va-btn:hover { color: var(--gold); }
+
+.loading-verse {
+  text-align: center; padding: 60px;
+  color: var(--text3); font-size: 0.9rem;
+}
+.loading-verse i { display: block; font-size: 2rem; color: var(--gold); margin-bottom: 12px; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── VERSE OF THE DAY ── */
+.votd-panel {
+  flex: 1; overflow-y: auto; padding: 40px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+
+.votd-card {
+  background: linear-gradient(135deg, var(--green) 0%, #1b4a35 100%);
+  border-radius: 20px; padding: 36px;
+  border: 1px solid rgba(197,160,89,0.3);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.votd-card::before {
+  content: '\201C';
+  position: absolute; top: -10px; left: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 10rem; color: rgba(197,160,89,0.1);
+  line-height: 1;
+}
+.votd-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold2); margin-bottom: 16px; }
+.votd-text {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.3rem; line-height: 1.7; color: #fff; margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.votd-ref { font-size: 0.82rem; color: var(--gold2); font-weight: 600; }
+.votd-actions { display: flex; gap: 10px; margin-top: 20px; }
+.votd-btn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; border-radius: 25px; padding: 8px 18px;
+  cursor: pointer; font-size: 0.75rem; font-family: 'Montserrat', sans-serif;
+  font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+}
+.votd-btn:hover { background: var(--gold); border-color: var(--gold); }
+
+/* Daily readings grid */
+.readings-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;
+}
+.reading-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; cursor: pointer;
+  transition: all 0.25s;
+}
+.reading-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow); }
+.rc-day { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px; }
+.rc-ref { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text); margin-bottom: 6px; }
+.rc-preview { font-size: 0.78rem; color: var(--text2); line-height: 1.5; font-family: 'Lora', serif; font-style: italic; }
+
+/* ── SDA BELIEFS ── */
+.beliefs-panel {
+  flex: 1; overflow-y: auto; padding: 32px 40px;
+}
+.beliefs-intro {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px; margin-bottom: 28px;
+  border-left: 4px solid var(--gold);
+}
+.beliefs-intro h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 8px; }
+.beliefs-intro p { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+
+.belief-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;
+}
+.belief-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; transition: all 0.25s;
+  cursor: pointer;
+}
+.belief-card:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+.bc-num { font-size: 0.62rem; font-weight: 700; color: var(--gold); letter-spacing: 1px; margin-bottom: 6px; }
+.bc-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text); margin-bottom: 8px; }
+.bc-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.55; margin-bottom: 12px; }
+.bc-verse { font-size: 0.72rem; color: var(--gold); font-style: italic; display: flex; align-items: center; gap: 4px; }
+
+/* ── BOOKMARKS ── */
+.bookmarks-panel {
+  flex: 1; overflow-y: auto; padding: 32px 40px;
+}
+.bm-empty { text-align: center; padding: 80px 20px; color: var(--text3); }
+.bm-empty i { font-size: 3rem; color: var(--border); display: block; margin-bottom: 16px; }
+.bm-empty p { font-size: 0.85rem; line-height: 1.6; }
+
+.bookmark-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
+  display: flex; gap: 14px; align-items: flex-start;
+  transition: all 0.2s;
+}
+.bookmark-item:hover { border-color: var(--gold); }
+.bm-icon { color: var(--gold); font-size: 1rem; padding-top: 2px; flex-shrink: 0; }
+.bm-content { flex: 1; }
+.bm-ref { font-size: 0.72rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.bm-text { font-family: 'Lora', serif; font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+.bm-delete { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 0.8rem; padding: 4px; border-radius: 4px; transition: color 0.2s; }
+.bm-delete:hover { color: #e74c3c; }
+
+/* ── SEARCH RESULTS ── */
+.search-panel {
+  flex: 1; overflow-y: auto; padding: 32px 40px;
+}
+.search-hero {
+  text-align: center; padding: 40px 20px 32px;
+}
+.search-hero h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 8px; }
+.search-hero p { color: var(--text2); font-size: 0.82rem; }
+.search-big {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 2px solid var(--border);
+  border-radius: 14px; padding: 14px 20px; margin-bottom: 28px;
+  transition: border-color 0.2s;
+}
+.search-big:focus-within { border-color: var(--gold); }
+.search-big input {
+  flex: 1; background: none; border: none; outline: none;
+  color: var(--text); font-family: 'Lora', serif; font-size: 1rem;
+}
+.search-big input::placeholder { color: var(--text3); }
+.search-big button {
+  background: var(--green); border: none; color: white;
+  border-radius: 8px; padding: 8px 18px; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600;
+  transition: background 0.2s;
+}
+.search-big button:hover { background: var(--green2); }
+
+.search-result {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 10px;
+  cursor: pointer; transition: all 0.2s;
+}
+.search-result:hover { border-color: var(--gold); }
+.sr-ref { font-size: 0.72rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.sr-text { font-family: 'Lora', serif; font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+.sr-text mark { background: rgba(197,160,89,0.25); color: var(--gold2); border-radius: 2px; padding: 0 2px; }
+
+/* ── DEVOTIONAL ── */
+.devot-panel {
+  flex: 1; overflow-y: auto; padding: 40px;
+}
+.devot-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden; margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.devot-header {
+  background: linear-gradient(135deg, #1b362a 0%, var(--green) 100%);
+  padding: 28px 32px;
+}
+.devot-date { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold2); margin-bottom: 8px; }
+.devot-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; line-height: 1.3; }
+.devot-body { padding: 28px 32px; }
+.devot-verse {
+  background: var(--verse-bg); border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0; padding: 16px 18px; margin-bottom: 20px;
+}
+.devot-verse-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+.devot-verse-ref { font-size: 0.72rem; color: var(--gold); font-weight: 600; }
+.devot-content { font-size: 0.88rem; color: var(--text2); line-height: 1.85; }
+.devot-content p { margin-bottom: 14px; }
+.devot-prayer {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+  border-radius: 12px; padding: 20px; margin-top: 20px;
+}
+.devot-prayer-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold2); margin-bottom: 8px; }
+.devot-prayer-text { font-family: 'Lora', serif; font-style: italic; font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.65; }
+
+/* ── TOAST NOTIFICATION ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--green); color: white; border-radius: 25px;
+  padding: 10px 22px; font-size: 0.8rem; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  border: 1px solid rgba(197,160,89,0.3);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast i { color: var(--gold2); }
+
+/* ── MOBILE ── */
+.mobile-nav {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 8px 0; z-index: 100;
+}
+.mobile-nav-inner { display: flex; justify-content: space-around; }
+.mob-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: none; color: var(--text3); cursor: pointer;
+  padding: 6px 12px; border-radius: 10px; transition: color 0.2s; font-size: 0.55rem;
+  font-family: 'Montserrat', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.mob-btn i { font-size: 1.1rem; }
+.mob-btn.active { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: block; }
+  .main { padding-bottom: 65px; }
+  .bible-content { padding: 20px; }
+  .votd-panel, .beliefs-panel, .bookmarks-panel, .search-panel, .devot-panel { padding: 20px; }
+  .reader-controls { padding: 10px 16px; }
+  .topbar { padding: 10px 16px; }
+  .topbar .search-bar { display: none; }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* stagger verse animations */
+.verse:nth-child(1)  { animation-delay: 0.02s; }
+.verse:nth-child(2)  { animation-delay: 0.04s; }
+.verse:nth-child(3)  { animation-delay: 0.06s; }
+.verse:nth-child(4)  { animation-delay: 0.08s; }
+.verse:nth-child(5)  { animation-delay: 0.10s; }
+.verse:nth-child(6)  { animation-delay: 0.12s; }
+.verse:nth-child(7)  { animation-delay: 0.14s; }
+.verse:nth-child(8)  { animation-delay: 0.16s; }
+.verse:nth-child(9)  { animation-delay: 0.18s; }
+.verse:nth-child(10) { animation-delay: 0.20s; }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i><span id="toastMsg">Copied!</span></div>
+
+<div class="app">
+
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="app-logo">
+        <div class="cross"></div>
+        <h1>The Word</h1>
+      </div>
+      <div class="app-subtitle">SDA Bible App</div>
+    </div>
+
+    <!-- Sabbath Countdown -->
+    <div class="sabbath-widget">
+      <div class="sw-label">Next Sabbath</div>
+      <div class="sw-title">⛪ Sabbath Countdown</div>
+      <div class="sabbath-timer">
+        <div class="st-unit"><div class="num" id="sb-days">00</div><div class="lbl">Days</div></div>
+        <div class="st-unit"><div class="num" id="sb-hrs">00</div><div class="lbl">Hrs</div></div>
+        <div class="st-unit"><div class="num" id="sb-min">00</div><div class="lbl">Min</div></div>
+        <div class="st-unit"><div class="num" id="sb-sec">00</div><div class="lbl">Sec</div></div>
+      </div>
+    </div>
+
+    <div class="nav-tabs">
+      <div class="nav-section-label">Study</div>
+      <button class="nav-tab active" onclick="showPanel('reader')" id="tab-reader">
+        <i class="fa-solid fa-book-open"></i> Bible Reader
+      </button>
+      <button class="nav-tab" onclick="showPanel('votd')" id="tab-votd">
+        <i class="fa-solid fa-sun"></i> Verse of the Day
+      </button>
+      <button class="nav-tab" onclick="showPanel('devot')" id="tab-devot">
+        <i class="fa-solid fa-feather-pointed"></i> Devotional
+      </button>
+      <button class="nav-tab" onclick="showPanel('search')" id="tab-search">
+        <i class="fa-solid fa-magnifying-glass"></i> Search
+      </button>
+
+      <div class="nav-section-label">Adventist Faith</div>
+      <button class="nav-tab" onclick="showPanel('beliefs')" id="tab-beliefs">
+        <i class="fa-solid fa-cross"></i> 28 Beliefs
+      </button>
+      <button class="nav-tab" onclick="showPanel('bookmarks')" id="tab-bookmarks">
+        <i class="fa-solid fa-bookmark"></i> Bookmarks
+        <span id="bm-count" style="margin-left:auto;background:var(--gold);color:#000;border-radius:20px;padding:1px 7px;font-size:0.62rem;font-weight:700;display:none;"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <main class="main">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <span class="topbar-title" id="topbarTitle">Bible Reader — KJV</span>
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search scriptures…" id="quickSearch" onkeydown="if(event.key==='Enter'){showPanel('search');doSearch();}">
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme" id="themeBtn"><i class="fa-solid fa-moon"></i></button>
+      <button class="icon-btn" onclick="showPanel('bookmarks')" title="Bookmarks"><i class="fa-solid fa-bookmark"></i></button>
+    </div>
+
+    <!-- ── BIBLE READER PANEL ── -->
+    <div class="panel active" id="panel-reader">
+      <div class="reader-controls">
+        <select class="select-styled" id="bookSelect" onchange="onBookChange()"></select>
+        <select class="select-styled" id="chapSelect" onchange="loadChapter()"></select>
+        <button class="nav-btn" onclick="prevChapter()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+        <button class="nav-btn" onclick="nextChapter()">Next <i class="fa-solid fa-chevron-right"></i></button>
+        <div class="font-controls">
+          <button class="font-btn" onclick="changeFontSize(-1)">A-</button>
+          <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+        </div>
+      </div>
+      <div class="bible-content" id="bibleContent">
+        <div class="loading-verse"><i class="fa-solid fa-spinner"></i>Loading Scripture…</div>
+      </div>
+    </div>
+
+    <!-- ── VERSE OF THE DAY PANEL ── -->
+    <div class="panel" id="panel-votd">
+      <div class="votd-panel">
+        <div class="votd-card" id="votdCard">
+          <div class="votd-label">✦ Verse of the Day</div>
+          <div class="votd-text" id="votdText">Loading…</div>
+          <div class="votd-ref" id="votdRef"></div>
+          <div class="votd-actions">
+            <button class="votd-btn" onclick="copyVOTD()"><i class="fa-solid fa-copy"></i> Copy</button>
+            <button class="votd-btn" onclick="bookmarkVOTD()"><i class="fa-solid fa-bookmark"></i> Bookmark</button>
+            <button class="votd-btn" onclick="loadVOTD()"><i class="fa-solid fa-rotate"></i> New Verse</button>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:16px;">📖 Suggested Daily Readings</h3>
+        <div class="readings-grid" id="readingsGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── DEVOTIONAL PANEL ── -->
+    <div class="panel" id="panel-devot">
+      <div class="devot-panel" id="devotContent"></div>
+    </div>
+
+    <!-- ── SEARCH PANEL ── -->
+    <div class="panel" id="panel-search">
+      <div class="search-panel">
+        <div class="search-hero">
+          <h2>Search the Scriptures</h2>
+          <p>Search by keyword, topic, or reference (e.g. "John 3:16" or "faith")</p>
+        </div>
+        <div class="search-big">
+          <i class="fa-solid fa-magnifying-glass" style="color:var(--text3)"></i>
+          <input type="text" id="searchInput" placeholder="e.g. love, grace, Sabbath, John 3:16…" onkeydown="if(event.key==='Enter')doSearch()">
+          <button onclick="doSearch()">Search</button>
+        </div>
+        <div id="searchResults"></div>
+      </div>
+    </div>
+
+    <!-- ── BELIEFS PANEL ── -->
+    <div class="panel" id="panel-beliefs">
+      <div class="beliefs-panel">
+        <div class="beliefs-intro">
+          <h3>✦ The 28 Fundamental Beliefs</h3>
+          <p>Seventh-day Adventists accept the Bible as their only creed and hold certain fundamental beliefs to be the teaching of the Holy Scriptures. These beliefs, as set forth here, constitute the church's understanding and expression of the teaching of Scripture.</p>
+        </div>
+        <div class="belief-grid" id="beliefGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── BOOKMARKS PANEL ── -->
+    <div class="panel" id="panel-bookmarks">
+      <div class="bookmarks-panel" id="bookmarksContent">
+        <div class="bm-empty"><i class="fa-regular fa-bookmark"></i><p>No bookmarks yet.<br>Hover over a verse and click the bookmark icon to save it.</p></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mob-btn active" onclick="showPanel('reader')" id="mob-reader"><i class="fa-solid fa-book-open"></i>Bible</button>
+    <button class="mob-btn" onclick="showPanel('votd')" id="mob-votd"><i class="fa-solid fa-sun"></i>Today</button>
+    <button class="mob-btn" onclick="showPanel('search')" id="mob-search"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+    <button class="mob-btn" onclick="showPanel('beliefs')" id="mob-beliefs"><i class="fa-solid fa-cross"></i>Beliefs</button>
+    <button class="mob-btn" onclick="showPanel('bookmarks')" id="mob-bookmarks"><i class="fa-solid fa-bookmark"></i>Saved</button>
+  </div>
+</nav>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════ */
+const BOOKS = [
+  {n:"Genesis",c:50},{n:"Exodus",c:40},{n:"Leviticus",c:27},{n:"Numbers",c:36},{n:"Deuteronomy",c:34},
+  {n:"Joshua",c:24},{n:"Judges",c:21},{n:"Ruth",c:4},{n:"1 Samuel",c:31},{n:"2 Samuel",c:24},
+  {n:"1 Kings",c:22},{n:"2 Kings",c:25},{n:"1 Chronicles",c:29},{n:"2 Chronicles",c:36},{n:"Ezra",c:10},
+  {n:"Nehemiah",c:13},{n:"Esther",c:10},{n:"Job",c:42},{n:"Psalms",c:150},{n:"Proverbs",c:31},
+  {n:"Ecclesiastes",c:12},{n:"Song of Solomon",c:8},{n:"Isaiah",c:66},{n:"Jeremiah",c:52},{n:"Lamentations",c:5},
+  {n:"Ezekiel",c:48},{n:"Daniel",c:12},{n:"Hosea",c:14},{n:"Joel",c:3},{n:"Amos",c:9},
+  {n:"Obadiah",c:1},{n:"Jonah",c:4},{n:"Micah",c:7},{n:"Nahum",c:3},{n:"Habakkuk",c:3},
+  {n:"Zephaniah",c:3},{n:"Haggai",c:2},{n:"Zechariah",c:14},{n:"Malachi",c:4},
+  {n:"Matthew",c:28},{n:"Mark",c:16},{n:"Luke",c:24},{n:"John",c:21},{n:"Acts",c:28},
+  {n:"Romans",c:16},{n:"1 Corinthians",c:16},{n:"2 Corinthians",c:13},{n:"Galatians",c:6},{n:"Ephesians",c:6},
+  {n:"Philippians",c:4},{n:"Colossians",c:4},{n:"1 Thessalonians",c:5},{n:"2 Thessalonians",c:3},{n:"1 Timothy",c:6},
+  {n:"2 Timothy",c:4},{n:"Titus",c:3},{n:"Philemon",c:1},{n:"Hebrews",c:13},{n:"James",c:5},
+  {n:"1 Peter",c:5},{n:"2 Peter",c:3},{n:"1 John",c:5},{n:"2 John",c:1},{n:"3 John",c:1},
+  {n:"Jude",c:1},{n:"Revelation",c:22}
+];
+
+const VOTD_REFS = [
+  "John 3:16","Philippians 4:13","Jeremiah 29:11","Romans 8:28","Psalm 23:1",
+  "Isaiah 41:10","Proverbs 3:5","Matthew 11:28","John 14:6","Romans 12:2",
+  "Psalm 119:105","2 Timothy 3:16","Hebrews 11:1","James 1:5","1 John 4:19",
+  "Revelation 14:12","Daniel 12:3","Isaiah 40:31","Psalm 46:10","Micah 6:8",
+  "Matthew 24:14","Acts 2:38","Ephesians 2:8","Galatians 5:22","Colossians 3:2"
+];
+
+const BELIEFS = [
+  {n:"01", t:"The Holy Scriptures", d:"The Holy Scriptures, Old and New Testaments, are the written Word of God, given by divine inspiration. The inspired authors spoke and wrote as they were moved by the Holy Spirit.", v:"2 Timothy 3:16-17"},
+  {n:"02", t:"The Trinity", d:"There is one God: Father, Son, and Holy Spirit, a unity of three co-eternal Persons. God is immortal, all-powerful, all-knowing, above all, and ever present.", v:"Matthew 28:19"},
+  {n:"03", t:"The Father", d:"God the eternal Father is the Creator, Source, Sustainer, and Sovereign of all creation. He is just and holy, merciful and gracious, slow to anger, and abounding in steadfast love.", v:"Genesis 1:1"},
+  {n:"04", t:"The Son", d:"God the eternal Son became incarnate in Jesus Christ. Through Him all things were created, the character of God is revealed, the salvation of humanity is accomplished.", v:"John 1:1-3"},
+  {n:"05", t:"The Holy Spirit", d:"God the eternal Spirit was active with the Father and the Son in Creation, incarnation, and redemption. He inspired the writers of Scripture.", v:"John 14:16-17"},
+  {n:"06", t:"Creation", d:"God is Creator of all things. In six days the Lord made the heaven and the earth, and rested on the seventh day. Thus He established the Sabbath as a perpetual memorial of His creative work.", v:"Genesis 1:1-2:3"},
+  {n:"07", t:"The Nature of Humanity", d:"Man and woman were made in the image of God with individuality, the power and freedom to think and to do. Though created free beings, they are dependent upon God for life.", v:"Genesis 1:26-27"},
+  {n:"08", t:"The Great Controversy", d:"All humanity is now involved in a great controversy between Christ and Satan regarding the character of God, His law, and His sovereignty over the universe.", v:"Revelation 12:7-9"},
+  {n:"09", t:"The Life, Death & Resurrection of Christ", d:"In Christ's life of perfect obedience to God's will, His suffering, death, and resurrection, God provided the only means of atonement for human sin.", v:"John 3:16"},
+  {n:"10", t:"The Experience of Salvation", d:"In infinite love and mercy God made Christ, who knew no sin, to be sin for us, so that in Him we might be made the righteousness of God.", v:"Ephesians 2:8-9"},
+  {n:"11", t:"Growing in Christ", d:"By His death and resurrection, Jesus Christ has triumphed over the forces of evil. He who subjugates the demonic spirits now gives us victory.", v:"Romans 8:1"},
+  {n:"12", t:"The Church", d:"The church is the community of believers who confess Jesus Christ as Lord and Savior. In continuity with the people of God in Old Testament times, we are called out from the world.", v:"Matthew 16:18"},
+  {n:"13", t:"The Remnant and Its Mission", d:"The universal church is composed of all who truly believe in Christ, but in the last days a remnant has been called out to keep the commandments of God and the faith of Jesus.", v:"Revelation 12:17"},
+  {n:"14", t:"Unity in the Body of Christ", d:"The church is one body with many members, called from every nation, kindred, tongue, and people. In Christ we are a new creation; distinctions of race, culture, learning, and nationality are no basis for differentiation.", v:"Galatians 3:28"},
+  {n:"15", t:"Baptism", d:"By baptism we confess our faith in the death and resurrection of Jesus Christ, and testify of our death to sin and of our purpose to walk in newness of life. We are baptized by immersion in water.", v:"Matthew 28:19-20"},
+  {n:"16", t:"The Lord's Supper", d:"The Lord's Supper is a participation in the emblems of the body and blood of Jesus as an expression of faith in Him, our Lord and Savior.", v:"1 Corinthians 11:23-26"},
+  {n:"17", t:"Spiritual Gifts & Ministries", d:"God bestows upon all members of His church in every age spiritual gifts which each member is to employ in loving ministry for the common good of the church and of humanity.", v:"1 Corinthians 12:7"},
+  {n:"18", t:"The Gift of Prophecy", d:"The Scriptures testify that one of the gifts of the Holy Spirit is prophecy. This gift is an identifying mark of the remnant church.", v:"Acts 2:17"},
+  {n:"19", t:"The Law of God", d:"The great principles of God's law are embodied in the Ten Commandments and exemplified in the life of Christ. They express God's love, will, and purposes concerning human conduct.", v:"Exodus 20:1-17"},
+  {n:"20", t:"The Sabbath", d:"The beneficent Creator, after the six days of Creation, rested on the seventh day and instituted the Sabbath for all people as a memorial of Creation. The Sabbath is a day of rest, worship and ministry.", v:"Genesis 2:2-3"},
+  {n:"21", t:"Stewardship", d:"We are God's stewards, entrusted by Him with time and opportunities, abilities and possessions, and the blessings of the earth and its resources. We acknowledge God's ownership by faithful service to Him.", v:"Malachi 3:10"},
+  {n:"22", t:"Christian Behavior", d:"We are called to be a godly people who think, feel, and act in harmony with biblical principles in all aspects of personal and social life. For the Spirit to recreate in us the character of our Lord we involve ourselves only in things which will produce Christlike purity.", v:"Romans 12:1-2"},
+  {n:"23", t:"Marriage and the Family", d:"Marriage was divinely established in Eden and affirmed by Jesus to be a lifelong union between a man and a woman in loving companionship.", v:"Genesis 2:24"},
+  {n:"24", t:"Christ's Ministry in the Heavenly Sanctuary", d:"There is a sanctuary in heaven, the true tabernacle which the Lord set up and not man. In it Christ ministers on our behalf, making available to believers the benefits of His atoning sacrifice.", v:"Hebrews 8:1-2"},
+  {n:"25", t:"The Second Coming of Christ", d:"The second coming of Christ is the blessed hope of the church, the grand climax of the gospel. The Savior's coming will be literal, personal, visible, and worldwide.", v:"Revelation 22:12"},
+  {n:"26", t:"Death and Resurrection", d:"The wages of sin is death. But God, who alone is immortal, will grant eternal life to His redeemed. Until that day death is an unconscious state for all people.", v:"1 Thessalonians 4:16"},
+  {n:"27", t:"The Millennium and the End of Sin", d:"The millennium is the thousand-year reign of Christ with His saints in heaven between the first and second resurrections. During this time the wicked dead will be judged.", v:"Revelation 20:1-3"},
+  {n:"28", t:"The New Earth", d:"On the new earth, in which righteousness dwells, God will provide an eternal home for the redeemed and a perfect environment for everlasting life, love, joy, and learning in His presence.", v:"Revelation 21:1-4"}
+];
+
+const DEVOTIONALS = [
+  {
+    title: "Rest in His Presence",
+    verse: "Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
+    ref: "Matthew 11:28 (KJV)",
+    content: `<p>In the rush of daily life, we often forget the most profound invitation ever extended to humanity. Jesus doesn't say "Come and work harder" or "Come and prove yourself worthy." He simply says, <em>Come.</em></p>
+    <p>The Sabbath rest God instituted at creation was not merely a cessation of labor — it was an invitation to enter into communion with the Creator Himself. Every week, God sets aside a day to remind us that our identity is not found in our productivity but in our relationship with Him.</p>
+    <p>Today, whatever burden you carry — whether anxiety, grief, uncertainty, or exhaustion — bring it to Jesus. He does not promise an absence of difficulty, but He promises His presence in the midst of it. And His presence changes everything.</p>`,
+    prayer: "Lord, teach me to truly rest in You — not just on the Sabbath, but in every moment of every day. Help me to release my burdens and trust that You hold all things in Your hands. Amen."
+  },
+  {
+    title: "The Everlasting Gospel",
+    verse: "And I saw another angel fly in the midst of heaven, having the everlasting gospel to preach unto them that dwell on the earth.",
+    ref: "Revelation 14:6 (KJV)",
+    content: `<p>The three angels' messages of Revelation 14 form the heart of the Seventh-day Adventist mission. The first angel carries an "everlasting gospel" — a reminder that God's good news is not a temporary offer but an eternal truth.</p>
+    <p>What is this everlasting gospel? That God loves us so deeply He sent His Son to die in our place. That through Christ's righteousness, we stand forgiven and accepted before a holy God. That the same power that raised Jesus from the dead is available to transform our lives today.</p>
+    <p>We are called to be messengers of this gospel — not with fear or condemnation, but with the joyful urgency of people who have tasted and seen that the Lord is good.</p>`,
+    prayer: "Father, make me a faithful messenger of Your everlasting gospel. Give me the courage to share Your love with those around me, and let my life reflect the beauty of Your grace. Amen."
+  },
+  {
+    title: "Your Body, God's Temple",
+    verse: "What? know ye not that your body is the temple of the Holy Ghost which is in you?",
+    ref: "1 Corinthians 6:19 (KJV)",
+    content: `<p>God cares about the whole person — body, mind, and spirit. This is why Adventists have historically championed health reform, believing that physical wellness enables clearer spiritual perception and more effective service.</p>
+    <p>The principle is simple but profound: the same Spirit who inspired the Scriptures dwells within our physical bodies. How we treat these bodies — what we eat, how we rest, how we exercise — either enhances or diminishes our capacity to hear His voice.</p>
+    <p>This is not about earning salvation through healthy living. It is about honoring the God who made us, loving the temple He inhabits, and being our best for His service.</p>`,
+    prayer: "Lord, help me to honor You with my body. Give me wisdom in my choices and discipline in my habits. May my physical health reflect my desire to serve You with my whole being. Amen."
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let currentBook = 42, currentChap = 3, fontSize = 18;
+let bookmarks = JSON.parse(localStorage.getItem('sda-bookmarks') || '[]');
+let isDark = true;
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+window.onload = function() {
+  populateBooks();
+  loadChapter();
+  loadVOTD();
+  buildBeliefs();
+  renderBookmarks();
+  loadDevotional();
+  buildReadings();
+  startSabbathTimer();
+  updateBMCount();
+};
+
+/* ═══════════════════════════════════════════════
+   PANEL NAVIGATION
+═══════════════════════════════════════════════ */
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mob-btn').forEach(t => t.classList.remove('active'));
+
+  document.getElementById('panel-' + id).classList.add('active');
+  const tab = document.getElementById('tab-' + id);
+  if (tab) tab.classList.add('active');
+  const mob = document.getElementById('mob-' + id);
+  if (mob) mob.classList.add('active');
+
+  const titles = {
+    reader: 'Bible Reader — KJV',
+    votd: 'Verse of the Day',
+    devot: 'Daily Devotional',
+    search: 'Search the Scriptures',
+    beliefs: '28 Fundamental Beliefs',
+    bookmarks: 'My Bookmarks'
+  };
+  document.getElementById('topbarTitle').textContent = titles[id] || '';
+
+  if (id === 'search') {
+    const qs = document.getElementById('quickSearch').value;
+    if (qs) {
+      document.getElementById('searchInput').value = qs;
+      doSearch();
+    }
+    setTimeout(() => document.getElementById('searchInput').focus(), 100);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════════ */
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').innerHTML = isDark
+    ? '<i class="fa-solid fa-moon"></i>'
+    : '<i class="fa-solid fa-sun"></i>';
+}
+
+/* ═══════════════════════════════════════════════
+   BIBLE READER
+═══════════════════════════════════════════════ */
+function populateBooks() {
+  const sel = document.getElementById('bookSelect');
+  BOOKS.forEach((b, i) => {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = b.n;
+    if (i === currentBook) o.selected = true;
+    sel.appendChild(o);
+  });
+  populateChapters();
+}
+
+function populateChapters() {
+  const sel = document.getElementById('chapSelect');
+  sel.innerHTML = '';
+  const book = BOOKS[currentBook];
+  for (let c = 1; c <= book.c; c++) {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = 'Chapter ' + c;
+    if (c === currentChap) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+
+function onBookChange() {
+  currentBook = parseInt(document.getElementById('bookSelect').value);
+  currentChap = 1;
+  populateChapters();
+  loadChapter();
+}
+
+function loadChapter() {
+  currentChap = parseInt(document.getElementById('chapSelect').value) || currentChap;
+  const book = BOOKS[currentBook];
+  const ref = encodeURIComponent(book.n + ' ' + currentChap);
+  const content = document.getElementById('bibleContent');
+  content.innerHTML = '<div class="loading-verse"><i class="fa-solid fa-spinner"></i>Loading Scripture…</div>';
+
+  fetch(`https://bible-api.com/${ref}?translation=kjv`)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.verses) { content.innerHTML = '<div class="loading-verse"><i class="fa-solid fa-triangle-exclamation"></i>Could not load this passage. Please check your connection.</div>'; return; }
+      renderVerses(data.verses, book.n, currentChap);
+    })
+    .catch(() => {
+      content.innerHTML = '<div class="loading-verse"><i class="fa-solid fa-wifi"></i>No internet connection. Please go online to read the Bible.</div>';
+    });
+}
+
+function renderVerses(verses, bookName, chapter) {
+  const content = document.getElementById('bibleContent');
+  content.style.fontSize = fontSize + 'px';
+  let html = `<div class="chapter-heading">${bookName} ${chapter}</div>
+              <div class="chapter-ref">King James Version</div>`;
+  verses.forEach(v => {
+    const bmKey = `${bookName} ${chapter}:${v.verse}`;
+    const isBM = bookmarks.some(b => b.ref === bmKey);
+    html += `<div class="verse ${isBM ? 'bookmarked' : ''}" id="v${v.verse}" onclick="highlightVerse(this)">
+      <span class="verse-num">${v.verse}</span>
+      <span class="verse-text">${v.text.trim()}</span>
+      <div class="verse-actions">
+        <button class="va-btn" title="Copy" onclick="copyVerse(event,'${bookName} ${chapter}:${v.verse}','${v.text.trim().replace(/'/g,"\\'")}')"><i class="fa-solid fa-copy"></i></button>
+        <button class="va-btn" title="Bookmark" onclick="toggleBookmark(event,'${bookName} ${chapter}:${v.verse}','${v.text.trim().replace(/'/g,"\\'")}',this)"><i class="fa-${isBM ? 'solid' : 'regular'} fa-bookmark" style="color:${isBM ? 'var(--gold)' : ''}"></i></button>
+        <button class="va-btn" title="Share" onclick="shareVerse(event,'${bookName} ${chapter}:${v.verse}','${v.text.trim().replace(/'/g,"\\'")}')"><i class="fa-solid fa-share-nodes"></i></button>
+      </div>
+    </div>`;
+  });
+  content.innerHTML = html;
+}
+
+function highlightVerse(el) {
+  document.querySelectorAll('.verse.highlighted').forEach(v => v !== el && v.classList.remove('highlighted'));
+  el.classList.toggle('highlighted');
+}
+
+function prevChapter() {
+  if (currentChap > 1) { currentChap--; document.getElementById('chapSelect').value = currentChap; loadChapter(); }
+  else if (currentBook > 0) { currentBook--; document.getElementById('bookSelect').value = currentBook; currentChap = BOOKS[currentBook].c; populateChapters(); loadChapter(); }
+}
+
+function nextChapter() {
+  if (currentChap < BOOKS[currentBook].c) { currentChap++; document.getElementById('chapSelect').value = currentChap; loadChapter(); }
+  else if (currentBook < BOOKS.length - 1) { currentBook++; document.getElementById('bookSelect').value = currentBook; currentChap = 1; populateChapters(); loadChapter(); }
+}
+
+function changeFontSize(delta) {
+  fontSize = Math.min(28, Math.max(13, fontSize + delta));
+  document.getElementById('bibleContent').style.fontSize = fontSize + 'px';
+}
+
+/* ═══════════════════════════════════════════════
+   VERSE ACTIONS
+═══════════════════════════════════════════════ */
+function copyVerse(e, ref, text) {
+  e.stopPropagation();
+  navigator.clipboard.writeText(`"${text}" — ${ref} (KJV)`).then(() => showToast('✓ Verse copied!'));
+}
+
+function shareVerse(e, ref, text) {
+  e.stopPropagation();
+  const msg = `"${text}" — ${ref} (KJV)`;
+  if (navigator.share) { navigator.share({ text: msg }); }
+  else { navigator.clipboard.writeText(msg); showToast('📋 Copied for sharing!'); }
+}
+
+function toggleBookmark(e, ref, text, btn) {
+  e.stopPropagation();
+  const idx = bookmarks.findIndex(b => b.ref === ref);
+  if (idx >= 0) {
+    bookmarks.splice(idx, 1);
+    btn.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+    btn.closest('.verse').classList.remove('bookmarked');
+    showToast('Bookmark removed');
+  } else {
+    bookmarks.push({ ref, text });
+    btn.innerHTML = '<i class="fa-solid fa-bookmark" style="color:var(--gold)"></i>';
+    btn.closest('.verse').classList.add('bookmarked');
+    showToast('✦ Verse bookmarked!');
+  }
+  localStorage.setItem('sda-bookmarks', JSON.stringify(bookmarks));
+  renderBookmarks();
+  updateBMCount();
+}
+
+/* ═══════════════════════════════════════════════
+   BOOKMARKS
+═══════════════════════════════════════════════ */
+function renderBookmarks() {
+  const c = document.getElementById('bookmarksContent');
+  if (!bookmarks.length) {
+    c.innerHTML = '<div class="bm-empty"><i class="fa-regular fa-bookmark"></i><p>No bookmarks yet.<br>Hover over a verse and click the bookmark icon to save it.</p></div>';
+    return;
+  }
+  c.innerHTML = bookmarks.map((b, i) => `
+    <div class="bookmark-item">
+      <i class="fa-solid fa-bookmark bm-icon"></i>
+      <div class="bm-content">
+        <div class="bm-ref">${b.ref}</div>
+        <div class="bm-text">${b.text}</div>
+      </div>
+      <button class="bm-delete" onclick="deleteBookmark(${i})" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  `).join('');
+}
+
+function deleteBookmark(i) {
+  bookmarks.splice(i, 1);
+  localStorage.setItem('sda-bookmarks', JSON.stringify(bookmarks));
+  renderBookmarks();
+  updateBMCount();
+  showToast('Bookmark removed');
+}
+
+function updateBMCount() {
+  const el = document.getElementById('bm-count');
+  if (bookmarks.length > 0) { el.textContent = bookmarks.length; el.style.display = 'inline'; }
+  else { el.style.display = 'none'; }
+}
+
+/* ═══════════════════════════════════════════════
+   VERSE OF THE DAY
+═══════════════════════════════════════════════ */
+function loadVOTD() {
+  const ref = VOTD_REFS[Math.floor(Math.random() * VOTD_REFS.length)];
+  document.getElementById('votdText').textContent = 'Loading…';
+  document.getElementById('votdRef').textContent = '';
+  fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`)
+    .then(r => r.json())
+    .then(d => {
+      const text = d.verses ? d.verses.map(v => v.text).join(' ').trim() : d.text;
+      document.getElementById('votdText').textContent = '"' + text + '"';
+      document.getElementById('votdRef').textContent = '— ' + ref + ' (KJV)';
+      document.getElementById('votdCard').dataset.text = text;
+      document.getElementById('votdCard').dataset.ref = ref;
+    }).catch(() => {
+      document.getElementById('votdText').textContent = '"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."';
+      document.getElementById('votdRef').textContent = '— John 3:16 (KJV)';
+    });
+}
+
+function copyVOTD() {
+  const card = document.getElementById('votdCard');
+  navigator.clipboard.writeText(`"${card.dataset.text}" — ${card.dataset.ref} (KJV)`).then(() => showToast('✓ Verse copied!'));
+}
+
+function bookmarkVOTD() {
+  const card = document.getElementById('votdCard');
+  const ref = card.dataset.ref, text = card.dataset.text;
+  if (!bookmarks.some(b => b.ref === ref)) {
+    bookmarks.push({ ref, text });
+    localStorage.setItem('sda-bookmarks', JSON.stringify(bookmarks));
+    renderBookmarks(); updateBMCount();
+    showToast('✦ Verse bookmarked!');
+  } else { showToast('Already bookmarked'); }
+}
+
+/* Daily readings */
+const READINGS = [
+  {day:"Old Testament", ref:"Psalm 23", preview:"The Lord is my shepherd; I shall not want."},
+  {day:"New Testament", ref:"John 1:1-14", preview:"In the beginning was the Word, and the Word was with God."},
+  {day:"Prophecy", ref:"Daniel 2:44", preview:"And in the days of these kings shall the God of heaven set up a kingdom."},
+  {day:"Proverbs", ref:"Proverbs 3:5-6", preview:"Trust in the Lord with all thine heart; and lean not unto thine own understanding."},
+  {day:"Revelation", ref:"Revelation 14:6-12", preview:"And I saw another angel fly in the midst of heaven."},
+  {day:"Epistles", ref:"Romans 8:28", preview:"And we know that all things work together for good to them that love God."}
+];
+
+function buildReadings() {
+  const g = document.getElementById('readingsGrid');
+  g.innerHTML = READINGS.map(r => `
+    <div class="reading-card" onclick="goToRef('${r.ref}')">
+      <div class="rc-day">${r.day}</div>
+      <div class="rc-ref">${r.ref}</div>
+      <div class="rc-preview">"${r.preview}"</div>
+    </div>
+  `).join('');
+}
+
+function goToRef(ref) {
+  showPanel('reader');
+  const parts = ref.match(/^(.+?)\s+(\d+)(?::(\d+))?/);
+  if (!parts) return;
+  const bookName = parts[1], chap = parseInt(parts[2]);
+  const bookIdx = BOOKS.findIndex(b => b.n.toLowerCase().includes(bookName.toLowerCase()));
+  if (bookIdx < 0) return;
+  currentBook = bookIdx; currentChap = chap;
+  document.getElementById('bookSelect').value = bookIdx;
+  populateChapters();
+  document.getElementById('chapSelect').value = chap;
+  loadChapter();
+}
+
+/* ═══════════════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════════════ */
+const SEARCH_VERSES = [
+  {ref:"John 3:16", text:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."},
+  {ref:"Romans 8:28", text:"And we know that all things work together for good to them that love God, to them who are the called according to his purpose."},
+  {ref:"Philippians 4:13", text:"I can do all things through Christ which strengtheneth me."},
+  {ref:"Isaiah 41:10", text:"Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness."},
+  {ref:"Jeremiah 29:11", text:"For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end."},
+  {ref:"Psalm 23:1", text:"The LORD is my shepherd; I shall not want."},
+  {ref:"Proverbs 3:5-6", text:"Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."},
+  {ref:"Revelation 14:12", text:"Here is the patience of the saints: here are they that keep the commandments of God, and the faith of Jesus."},
+  {ref:"Matthew 11:28", text:"Come unto me, all ye that labour and are heavy laden, and I will give you rest."},
+  {ref:"Genesis 2:3", text:"And God blessed the seventh day, and sanctified it: because that in it he had rested from all his work which God created and made."},
+  {ref:"Exodus 20:8", text:"Remember the sabbath day, to keep it holy."},
+  {ref:"Daniel 12:3", text:"And they that be wise shall shine as the brightness of the firmament; and they that turn many to righteousness as the stars for ever and ever."},
+  {ref:"1 Thessalonians 4:16", text:"For the Lord himself shall descend from heaven with a shout, with the voice of the archangel, and with the trump of God: and the dead in Christ shall rise first."},
+  {ref:"Revelation 21:4", text:"And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain."},
+  {ref:"Matthew 24:14", text:"And this gospel of the kingdom shall be preached in all the world for a witness unto all nations; and then shall the end come."},
+  {ref:"Hebrews 4:9", text:"There remaineth therefore a rest to the people of God."},
+  {ref:"John 14:1-3", text:"Let not your heart be troubled: ye believe in God, believe also in me. In my Father's house are many mansions: if it were not so, I would have told you. I go to prepare a place for you."},
+  {ref:"2 Timothy 3:16", text:"All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness."},
+  {ref:"1 John 4:8", text:"He that loveth not knoweth not God; for God is love."},
+  {ref:"Acts 2:38", text:"Then Peter said unto them, Repent, and be baptized every one of you in the name of Jesus Christ for the remission of sins, and ye shall receive the gift of the Holy Ghost."}
+];
+
+function doSearch() {
+  const q = (document.getElementById('searchInput').value || document.getElementById('quickSearch').value).trim().toLowerCase();
+  const res = document.getElementById('searchResults');
+  if (!q) { res.innerHTML = ''; return; }
+
+  // Check if it's a reference like "John 3:16"
+  const refMatch = q.match(/^(\w+\s?\w*)\s+(\d+):(\d+)/i);
+  if (refMatch) {
+    showPanel('search');
+    document.getElementById('searchInput').value = q;
+    fetch(`https://bible-api.com/${encodeURIComponent(q)}?translation=kjv`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.text) {
+          res.innerHTML = `<div class="search-result" onclick="goToRef('${q}')">
+            <div class="sr-ref">${q.toUpperCase()} — KJV</div>
+            <div class="sr-text">"${d.text.trim()}"</div>
+          </div>`;
+        }
+      }).catch(() => {});
+    return;
+  }
+
+  const matches = SEARCH_VERSES.filter(v =>
+    v.text.toLowerCase().includes(q) || v.ref.toLowerCase().includes(q)
+  );
+
+  if (!matches.length) {
+    res.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)"><i class="fa-solid fa-book-open" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--border)"></i>No results found for "<strong style="color:var(--text2)">${q}</strong>".<br><br><small>Try searching online references like "John 3:16"</small></div>`;
+    return;
+  }
+
+  res.innerHTML = matches.map(v => {
+    const highlighted = v.text.replace(new RegExp(`(${q})`, 'gi'), '<mark>$1</mark>');
+    return `<div class="search-result" onclick="goToRef('${v.ref}')">
+      <div class="sr-ref">${v.ref}</div>
+      <div class="sr-text">${highlighted}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   28 BELIEFS
+═══════════════════════════════════════════════ */
+function buildBeliefs() {
+  const g = document.getElementById('beliefGrid');
+  g.innerHTML = BELIEFS.map(b => `
+    <div class="belief-card" onclick="goToRef('${b.v.split('(')[0].trim()}')">
+      <div class="bc-num">BELIEF ${b.n}</div>
+      <div class="bc-title">${b.t}</div>
+      <div class="bc-desc">${b.d}</div>
+      <div class="bc-verse"><i class="fa-solid fa-book-open"></i>${b.v}</div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   DEVOTIONAL
+═══════════════════════════════════════════════ */
+function loadDevotional() {
+  const now = new Date();
+  const idx = now.getDay() % DEVOTIONALS.length;
+  const d = DEVOTIONALS[idx];
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Sabbath'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dateStr = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+
+  document.getElementById('devotContent').innerHTML = `
+    <div class="devot-card">
+      <div class="devot-header">
+        <div class="devot-date">✦ Daily Devotional — ${dateStr}</div>
+        <div class="devot-title">${d.title}</div>
+      </div>
+      <div class="devot-body">
+        <div class="devot-verse">
+          <div class="devot-verse-text">"${d.verse}"</div>
+          <div class="devot-verse-ref">${d.ref}</div>
+        </div>
+        <div class="devot-content">${d.content}</div>
+        <div class="devot-prayer">
+          <div class="devot-prayer-label">🙏 Prayer</div>
+          <div class="devot-prayer-text">${d.prayer}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════
+   SABBATH COUNTDOWN
+═══════════════════════════════════════════════ */
+function startSabbathTimer() {
+  function update() {
+    const now = new Date();
+    const day = now.getDay(); // 0=Sun, 6=Sat
+    const nextFri = new Date(now);
+    let daysUntilFri = (5 - day + 7) % 7 || 7;
+    // If it's currently Sabbath (Saturday), show it's Sabbath now
+    if (day === 6) {
+      document.querySelector('.sw-title').textContent = '🌅 Sabbath is Today!';
+      document.getElementById('sb-days').textContent = '00';
+      document.getElementById('sb-hrs').textContent = '00';
+      document.getElementById('sb-min').textContent = '00';
+      document.getElementById('sb-sec').textContent = '00';
+      return;
+    }
+    nextFri.setDate(now.getDate() + daysUntilFri);
+    nextFri.setHours(18, 0, 0, 0); // sunset approx 6pm
+    const diff = nextFri - now;
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('sb-days').textContent = String(d).padStart(2,'0');
+    document.getElementById('sb-hrs').textContent = String(h).padStart(2,'0');
+    document.getElementById('sb-min').textContent = String(m).padStart(2,'0');
+    document.getElementById('sb-sec').textContent = String(s).padStart(2,'0');
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toast').classList.add('show');
+  toastTimer = setTimeout(() => document.getElementById('toast').classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
