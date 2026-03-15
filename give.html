@@ -315,6 +315,562 @@
     <footer style="text-align: center; padding: 40px; background: #eee; color: #666; font-size: 0.8rem;">
         © 2026 Mothutlung Seventh-day Adventist Church. All contributions are used for the advancement of the Gospel.
     </footer>
+    
+<!-- ============================================================
+  MOTHOTLUNG SDA CHURCH – AI CHATBOT EMBED SNIPPET
+  
+  HOW TO USE:
+  Copy EVERYTHING below and paste it just before the </body> 
+  closing tag in your index.html (and any other page you want it on).
+  
+  It will appear as a gold chat bubble in the bottom-left corner.
+  Clicking it opens the full chat panel.
+============================================================ -->
+
+<!-- ① CHATBOT STYLES -->
+<style>
+  /* --- Floating Trigger Button --- */
+  .chat-trigger {
+    position: fixed;
+    bottom: 100px; /* sits above your existing WhatsApp/email buttons */
+    left: 25px;
+    width: 58px;
+    height: 58px;
+    background: linear-gradient(135deg, #2E5C48, #1b362a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(46,92,72,0.4);
+    z-index: 9990;
+    border: 2px solid #C5A059;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: chatPulse 3s ease infinite;
+  }
+
+  .chat-trigger:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(46,92,72,0.5);
+  }
+
+  @keyframes chatPulse {
+    0%,100% { box-shadow: 0 6px 20px rgba(46,92,72,0.4); }
+    50%      { box-shadow: 0 6px 28px rgba(197,160,89,0.5); }
+  }
+
+  .chat-trigger svg { width: 26px; height: 26px; fill: #C5A059; }
+
+  /* Tooltip label */
+  .chat-trigger::after {
+    content: 'Ask AI';
+    position: absolute;
+    left: 68px;
+    background: #1b362a;
+    color: #C5A059;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    border: 1px solid #C5A059;
+  }
+
+  .chat-trigger:hover::after { opacity: 1; }
+
+  /* --- Chat Panel Overlay --- */
+  .chat-panel-overlay {
+    position: fixed;
+    bottom: 0; left: 0; right: 0; top: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 9991;
+    display: none;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 0 0 20px 20px;
+    backdrop-filter: blur(2px);
+  }
+
+  .chat-panel-overlay.open { display: flex; }
+
+  /* --- Chat Panel Card --- */
+  .chat-panel {
+    width: 370px;
+    height: 560px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(46,92,72,0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: panelSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  @keyframes panelSlideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0)   scale(1);    }
+  }
+
+  /* Panel Header */
+  .cp-header {
+    background: linear-gradient(135deg, #1b362a 0%, #2E5C48 100%);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .cp-header::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 90px; height: 90px;
+    background: rgba(197,160,89,0.1);
+    border-radius: 50%;
+  }
+
+  .cp-avatar {
+    width: 40px; height: 40px;
+    background: #C5A059;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    border: 2px solid rgba(197,160,89,0.4);
+  }
+
+  .cp-header-text { position: relative; z-index: 1; flex: 1; }
+  .cp-header-text h4 { color: #fff; font-size: 0.9rem; font-weight: 700; margin: 0; }
+  .cp-header-text span {
+    color: #dfc48a;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .cp-status-dot {
+    width: 6px; height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+    display: inline-block;
+    animation: cpBlink 2s ease infinite;
+  }
+
+  @keyframes cpBlink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+  .cp-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #dfc48a;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .cp-close:hover { background: rgba(255,255,255,0.3); }
+
+  /* Messages */
+  .cp-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+  }
+
+  .cp-messages::-webkit-scrollbar { width: 3px; }
+  .cp-messages::-webkit-scrollbar-thumb { background: #d4e3dd; border-radius: 3px; }
+
+  .cp-msg-row { display: flex; gap: 7px; animation: cpSlideUp 0.25s ease; }
+  .cp-msg-row.user { flex-direction: row-reverse; }
+
+  @keyframes cpSlideUp {
+    from { opacity:0; transform:translateY(6px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .cp-av {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .cp-av.bot  { background: #2E5C48; color: #C5A059; }
+  .cp-av.user { background: #C5A059; color: #1b362a; }
+
+  .cp-bubble {
+    max-width: 80%;
+    padding: 9px 13px;
+    border-radius: 16px;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #2d3436;
+  }
+
+  .cp-bubble.bot  { background: #F5F1EA; border-bottom-left-radius: 3px; }
+  .cp-bubble.user { background: #2E5C48; color: #fff; border-bottom-right-radius: 3px; }
+
+  /* Typing dots */
+  .cp-typing { display: flex; gap: 4px; align-items: center; padding: 3px 0; }
+  .cp-typing span {
+    width: 6px; height: 6px;
+    background: #6b7a74;
+    border-radius: 50%;
+    animation: cpBounce 1.2s ease infinite;
+  }
+  .cp-typing span:nth-child(2) { animation-delay: 0.18s; }
+  .cp-typing span:nth-child(3) { animation-delay: 0.36s; }
+
+  @keyframes cpBounce {
+    0%,60%,100% { transform:translateY(0); }
+    30% { transform:translateY(-5px); }
+  }
+
+  /* Suggestions */
+  .cp-suggestions {
+    padding: 6px 12px 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .cp-chip {
+    background: #F5F1EA;
+    border: 1px solid #d4e3dd;
+    color: #2E5C48;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+  }
+
+  .cp-chip:hover { background: #2E5C48; color: #fff; border-color: #2E5C48; }
+
+  /* Input */
+  .cp-input-bar {
+    padding: 10px 12px;
+    border-top: 1px solid #eef3f0;
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .cp-input-bar textarea {
+    flex: 1;
+    resize: none;
+    border: 1.5px solid #d4e3dd;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.82rem;
+    color: #2d3436;
+    background: #F5F1EA;
+    outline: none;
+    min-height: 38px;
+    max-height: 90px;
+    line-height: 1.4;
+    transition: border-color 0.2s;
+  }
+
+  .cp-input-bar textarea:focus { border-color: #2E5C48; background: #fff; }
+  .cp-input-bar textarea::placeholder { color: #9fb5ae; }
+
+  .cp-send {
+    width: 38px; height: 38px;
+    background: #2E5C48;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .cp-send:hover { background: #C5A059; transform: scale(1.05); }
+  .cp-send:disabled { background: #c8d9d3; cursor: not-allowed; transform: none; }
+  .cp-send svg { width: 16px; height: 16px; fill: currentColor; }
+
+  .cp-footer {
+    text-align: center;
+    font-size: 0.62rem;
+    color: #9fb5ae;
+    padding: 5px;
+    border-top: 1px solid #f0f5f3;
+    flex-shrink: 0;
+  }
+
+  /* Responsive: full-screen on small phones */
+  @media (max-width: 420px) {
+    .chat-panel {
+      width: calc(100vw - 20px);
+      height: 80vh;
+    }
+    .chat-panel-overlay {
+      padding: 0 10px 10px 10px;
+    }
+  }
+</style>
+
+<!-- ② CHATBOT HTML -->
+
+<!-- Floating trigger button (bottom-left) -->
+<button class="chat-trigger" onclick="toggleChatPanel()" aria-label="Open Church AI Assistant">
+  <i class="fa-solid fa-robot" style="font-size:1.4rem; color:#C5A059;"></i>
+</button>
+
+<!-- Chat panel (hidden by default) -->
+<div class="chat-panel-overlay" id="chatPanelOverlay" onclick="handleOverlayClick(event)">
+  <div class="chat-panel" id="chatPanel">
+
+    <!-- Header -->
+    <div class="cp-header">
+      <div class="cp-avatar">✦</div>
+      <div class="cp-header-text">
+        <h4>Mothotlung Church Assistant</h4>
+        <span><span class="cp-status-dot"></span> Online – here to help</span>
+      </div>
+      <button class="cp-close" onclick="toggleChatPanel()">✕</button>
+    </div>
+
+    <!-- Messages -->
+    <div class="cp-messages" id="cpMessages">
+      <div class="cp-msg-row bot">
+        <div class="cp-av bot">✦</div>
+        <div class="cp-bubble bot">
+          Sawubona! 🙏 I'm your <strong>Mothotlung SDA Church</strong> assistant. Ask me about services, ministries, giving, beliefs, or how to get involved!
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick chips -->
+    <div class="cp-suggestions" id="cpSuggestions">
+      <button class="cp-chip" onclick="cpSend('What time are your services?')">⏰ Services</button>
+      <button class="cp-chip" onclick="cpSend('How do I get baptised?')">✝️ Baptism</button>
+      <button class="cp-chip" onclick="cpSend('How can I donate to the church?')">💛 Give</button>
+      <button class="cp-chip" onclick="cpSend('What ministries can I join?')">🤝 Ministries</button>
+      <button class="cp-chip" onclick="cpSend('How can I request prayer?')">🙏 Prayer</button>
+    </div>
+
+    <!-- Input -->
+    <div class="cp-input-bar">
+      <textarea
+        id="cpInput"
+        placeholder="Ask me anything…"
+        rows="1"
+        onkeydown="cpHandleKey(event)"
+        oninput="cpResize(this)"
+      ></textarea>
+      <button class="cp-send" id="cpSendBtn" onclick="cpSend()" title="Send">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+
+    <div class="cp-footer">Powered by Linq · Mothotlung SDA Church © 2026</div>
+  </div>
+</div>
+
+<!-- ③ CHATBOT SCRIPT -->
+<script>
+(function() {
+  /* ---------- SYSTEM PROMPT ---------- */
+  const CP_SYSTEM = `You are a warm, helpful, and knowledgeable AI assistant for the Mothotlung Seventh-day Adventist Church in South Africa. You represent the church with grace, kindness, and genuine hospitality.
+
+CHURCH DETAILS:
+- Full name: Mothotlung Seventh-day Adventist Church
+- Location: Disteneng Katakane Street, Mothutlung Rd, Brits, North West 0268, South Africa
+- Sabbath School: Saturdays at 9:15 AM | Divine Service: Saturdays at 11:00 AM | Afternoon Lessons: 2:30 PM
+- Mid-week prayer meetings: Wednesdays (sometimes) | General Saturday hours: 9:30 AM – 5:00 PM
+
+CONTACT:
+- Church Clerk: +27 72 361 5540 | Church Elder: +27 72 322 7621 (WhatsApp)
+- Prayer Line: +27 83 568 1837 | Email: mothutlung@toc.adventist.org
+- Facebook: facebook.com/mothotlungsda | YouTube: youtube.com/@MothotlungAdventist
+
+LEADERSHIP: Pastor KG. Ramugondo (Lead Pastor) | Mr. Monkwe (Head Elder) | Mrs. Legeote (Youth Leader)
+
+BRANCHES:
+- Brits SDA Branch: Kerk Street, Elangeni College, Brits – Sat 9:00 AM (brits.html)
+- Thetele SDA Branch: Church Street, Thetele – Sat 9:00 AM (titili.html)
+
+MINISTRIES: Children's Ministry (0–12) | Pathfinder Club (10–15, scout-style) | Health & Wellness (cooking classes, seminars) | Men's & Women's Ministries | Community Outreach (food, health expos) | Media Team | Prayer Ministry | Sabbath School
+
+SERMONS: YouTube live every Saturday | Archive at media.html | PDFs downloadable | AWR, SIDmedia, 3ABN radio available
+
+GIVING (Standard Bank):
+- Account Name: SDA Church Mothotlung | Account No: 130815675 | Branch Code: 051001
+- Reference: Your Name + Offering Type | Online giving coming soon at give.html
+
+BAPTISM & MEMBERSHIP: By full immersion. Contact Elder Monkwe (+27 72 322 7621) or submit inquiry at connect.html. Bible study classes available.
+
+PRAYER/SUPPORT: Confidential requests via connect.html | WhatsApp: +27 72 322 7621 | Prayer Line: +27 83 568 1837
+
+CORE BELIEFS: Bible is God's Word | Trinity | Saturday Sabbath (sunset Fri – sunset Sat) | Death is a peaceful sleep | Second Coming of Jesus | Baptism by immersion | Tithing & stewardship | 28 Fundamental Beliefs
+
+TONE: Warm, pastoral, welcoming. Empathise first for sensitive topics. Reply in user's language. Never be dismissive.`;
+
+  /* ---------- STATE ---------- */
+  const cpHistory = [];
+  let cpLoading = false;
+  let panelOpen = false;
+
+  /* ---------- PANEL TOGGLE ---------- */
+  window.toggleChatPanel = function() {
+    panelOpen = !panelOpen;
+    const overlay = document.getElementById('chatPanelOverlay');
+    overlay.classList.toggle('open', panelOpen);
+    if (panelOpen) {
+      setTimeout(() => document.getElementById('cpInput').focus(), 300);
+    }
+  };
+
+  window.handleOverlayClick = function(e) {
+    if (e.target === document.getElementById('chatPanelOverlay')) {
+      toggleChatPanel();
+    }
+  };
+
+  /* ---------- RENDER HELPERS ---------- */
+  function cpAppend(role, text) {
+    const area = document.getElementById('cpMessages');
+    const row = document.createElement('div');
+    row.className = `cp-msg-row ${role}`;
+
+    const av = document.createElement('div');
+    av.className = `cp-av ${role}`;
+    av.textContent = role === 'bot' ? '✦' : '👤';
+
+    const bubble = document.createElement('div');
+    bubble.className = `cp-bubble ${role}`;
+    bubble.innerHTML = text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
+
+    row.appendChild(av);
+    row.appendChild(bubble);
+    area.appendChild(row);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function cpShowTyping() {
+    const area = document.getElementById('cpMessages');
+    const row = document.createElement('div');
+    row.className = 'cp-msg-row bot';
+    row.id = 'cpTyping';
+    const av = document.createElement('div');
+    av.className = 'cp-av bot';
+    av.textContent = '✦';
+    const bubble = document.createElement('div');
+    bubble.className = 'cp-bubble bot';
+    bubble.innerHTML = '<div class="cp-typing"><span></span><span></span><span></span></div>';
+    row.appendChild(av);
+    row.appendChild(bubble);
+    area.appendChild(row);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function cpRemoveTyping() {
+    const t = document.getElementById('cpTyping');
+    if (t) t.remove();
+  }
+
+  function cpSetLoading(val) {
+    cpLoading = val;
+    document.getElementById('cpSendBtn').disabled = val;
+    document.getElementById('cpInput').disabled = val;
+  }
+
+  function cpHideSuggestions() {
+    const s = document.getElementById('cpSuggestions');
+    if (s) s.style.display = 'none';
+  }
+
+  /* ---------- SEND ---------- */
+  window.cpSend = async function(prefill) {
+    const input = document.getElementById('cpInput');
+    const text = (prefill || input.value).trim();
+    if (!text || cpLoading) return;
+
+    cpHideSuggestions();
+    cpAppend('user', text);
+    cpHistory.push({ role: 'user', content: text });
+
+    if (!prefill) { input.value = ''; cpResize(input); }
+    cpSetLoading(true);
+    cpShowTyping();
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: CP_SYSTEM,
+          messages: cpHistory
+        })
+      });
+
+      cpRemoveTyping();
+
+      if (!res.ok) throw new Error('Request failed');
+
+      const data = await res.json();
+      const reply = data.content?.find(b => b.type === 'text')?.text
+        || "I'm sorry, I couldn't get a response. Please try again.";
+
+      cpHistory.push({ role: 'assistant', content: reply });
+      cpAppend('bot', reply);
+
+    } catch (err) {
+      cpRemoveTyping();
+      cpAppend('bot', "Sorry, something went wrong. Please contact us directly at **+27 72 322 7621** 🙏");
+    } finally {
+      cpSetLoading(false);
+    }
+  };
+
+  /* ---------- UI HELPERS ---------- */
+  window.cpHandleKey = function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      cpSend();
+    }
+  };
+
+  window.cpResize = function(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+  };
+})();
+</script>
 
 </body>
 </html>
