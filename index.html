@@ -731,109 +731,168 @@
 </script>
 
 <script>
-(function () {
-    /* ============================================================
-       STEP 1: Go to https://aistudio.google.com
-       STEP 2: Click "Get API Key" → "Create API key" (it's FREE)
-       STEP 3: Replace YOUR_GEMINI_KEY below with your actual key
-    ============================================================ */
-    const GEMINI_KEY = 'AIzaSyDKU1W0Z_w_LL2wOUPsjGQ3OH9QC70Evm0';
 
-    const CP_SYSTEM = `You are a warm, helpful assistant for the Mothotlung Seventh-day Adventist Church in South Africa. Be concise, friendly and pastoral.
+    /* ===========================
+   KNOWLEDGE BASE (EXPANDED)
+=========================== */
+const knowledge = [
+    {
+        keywords: ["service", "time", "when"],
+        answer: "Sabbath School is at 9:15AM, Divine Service at 11:00AM, and Afternoon Lessons at 2:30PM 🙏"
+    },
+    {
+        keywords: ["pastor"],
+        answer: "Our pastor is Pastor KG Ramugondo."
+    },
+    {
+        keywords: ["elder"],
+        answer: "Our elder is Mr Monkwe."
+    },
+    {
+        keywords: ["contact", "phone", "call"],
+        answer: "📞 Clerk: +27 72 361 5540\n📞 Elder: +27 72 322 7621\n📞 Prayer Line: +27 83 568 1837"
+    },
+    {
+        keywords: ["baptism"],
+        answer: "Baptism is by full immersion. Bible studies are available. Contact Elder Monkwe."
+    },
+    {
+        keywords: ["location", "where", "address"],
+        answer: "📍 Disteneng Katakane Street, Mothutlung Rd, Brits, North West."
+    },
+    {
+        keywords: ["ministries"],
+        answer: "We have Children, Pathfinders (10–15), Health & Wellness, Outreach, Media Team, Prayer and Sabbath School ministries."
+    },
+    {
+        keywords: ["branches"],
+        answer: "We also have Brits SDA and Thetele SDA branches, both starting at 9AM."
+    },
+    {
+        keywords: ["giving", "bank", "offering"],
+        answer: "💳 Standard Bank\nAccount: SDA Church Mothotlung\nAccount No: 130815675\nBranch: 051001"
+    },
+    {
+        keywords: ["beliefs"],
+        answer: "We believe in the Bible, Trinity, Saturday Sabbath, Second Coming, and the 28 Fundamental Beliefs."
+    },
 
-CHURCH: Mothotlung SDA Church | Disteneng Katakane Street, Mothutlung Rd, Brits, North West 0268
-SERVICES: Sabbath School Sat 9:15AM | Divine Service Sat 11:00AM | Afternoon Lessons Sat 2:30PM
-CONTACT: Clerk +27 72 361 5540 | Elder +27 72 322 7621 | Prayer Line +27 83 568 1837 | mothutlung@toc.adventist.org
-LEADERSHIP: Pastor KG. Ramugondo | Elder Mr. Monkwe | Youth Leader Mrs. Legeote
-BRANCHES: Brits SDA (Kerk St, Elangeni College, Sat 9AM) | Thetele SDA (Church St, Thetele, Sat 9AM)
-GIVING: Standard Bank | Account: SDA Church Mothotlung | No: 130815675 | Branch: 051001
-BAPTISM: Full immersion. Contact Elder Monkwe. Bible studies available.
-MINISTRIES: Children, Pathfinders (10-15), Health & Wellness, Outreach, Media Team, Prayer, Sabbath School
-BELIEFS: Bible, Trinity, Saturday Sabbath, Second Coming, Baptism by immersion, 28 Fundamental Beliefs
-Reply in the same language the user writes in.`;
-
-    const cpHistory = [];
-    let cpLoading = false, panelOpen = false;
-
-    window.toggleChatPanel = function () {
-        panelOpen = !panelOpen;
-        document.getElementById('chatPanelOverlay').classList.toggle('open', panelOpen);
-        if (panelOpen) setTimeout(() => document.getElementById('cpInput').focus(), 300);
-    };
-
-    window.handleOverlayClick = function (e) {
-        if (e.target === document.getElementById('chatPanelOverlay')) toggleChatPanel();
-    };
-
-    function cpAppend(role, text) {
-        const area = document.getElementById('cpMessages');
-        const row = document.createElement('div'); row.className = `cp-msg-row ${role}`;
-        const av = document.createElement('div'); av.className = `cp-av ${role}`; av.textContent = role === 'bot' ? '✦' : '👤';
-        const bubble = document.createElement('div'); bubble.className = `cp-bubble ${role}`;
-        bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
-        row.appendChild(av); row.appendChild(bubble); area.appendChild(row); area.scrollTop = area.scrollHeight;
+    /* GENERAL INTELLIGENCE */
+    {
+        keywords: ["hello", "hi"],
+        answer: "Hello  How can I assist you today?"
+    },
+    {
+        keywords: ["thank"],
+        answer: "You're welcome "
+    },
+    {
+        keywords: ["who are you"],
+        answer: "I am the Mothotlung SDA AI assistant, here to help you with church information."
+    },
+    {
+        keywords: ["pray", "prayer"],
+        answer: " You can call our prayer line at +27 83 568 1837. Would you like me to say a short prayer for you?"
     }
+];
 
-    function cpShowTyping() {
-        const area = document.getElementById('cpMessages');
-        const row = document.createElement('div'); row.className = 'cp-msg-row bot'; row.id = 'cpTyping';
-        const av = document.createElement('div'); av.className = 'cp-av bot'; av.textContent = '✦';
-        const bubble = document.createElement('div'); bubble.className = 'cp-bubble bot';
-        bubble.innerHTML = '<div class="cp-typing"><span></span><span></span><span></span></div>';
-        row.appendChild(av); row.appendChild(bubble); area.appendChild(row); area.scrollTop = area.scrollHeight;
-    }
-    function cpRemoveTyping() { const t = document.getElementById('cpTyping'); if (t) t.remove(); }
-    function cpSetLoading(val) { cpLoading = val; document.getElementById('cpSendBtn').disabled = val; document.getElementById('cpInput').disabled = val; }
-    function cpHideSuggestions() { const s = document.getElementById('cpSuggestions'); if (s) s.style.display = 'none'; }
+/* ===========================
+   SMART MATCHING SYSTEM
+=========================== */
+function smartReply(input) {
+    const msg = input.toLowerCase();
 
-    window.cpSend = async function (prefill) {
-        const input = document.getElementById('cpInput');
-        const text = (prefill || input.value).trim();
-        if (!text || cpLoading) return;
+    let bestMatch = null;
+    let highestScore = 0;
 
-        cpHideSuggestions();
-        cpAppend('user', text);
+    for (let item of knowledge) {
+        let score = 0;
 
-        /* Gemini uses 'user' and 'model' roles */
-        cpHistory.push({ role: 'user', parts: [{ text }] });
-
-        if (!prefill) { input.value = ''; cpResize(input); }
-        cpSetLoading(true);
-        cpShowTyping();
-
-        /* Inject system prompt into the very first user message */
-        const contents = cpHistory.map((m, i) => ({
-            role: m.role,
-            parts: i === 0 ? [{ text: CP_SYSTEM + '\n\nUser: ' + m.parts[0].text }] : m.parts
-        }));
-
-        try {
-            const res = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents })
-                }
-            );
-            cpRemoveTyping();
-            if (!res.ok) throw new Error('API error ' + res.status);
-            const data = await res.json();
-            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text
-                || "I'm sorry, I couldn't get a response. Please try again.";
-            cpHistory.push({ role: 'model', parts: [{ text: reply }] });
-            cpAppend('bot', reply);
-        } catch (err) {
-            cpRemoveTyping();
-            cpAppend('bot', "Sorry, something went wrong. Please contact us directly at **+27 72 322 7621** 🙏");
-        } finally {
-            cpSetLoading(false);
+        for (let keyword of item.keywords) {
+            if (msg.includes(keyword)) score++;
         }
+
+        if (score > highestScore) {
+            highestScore = score;
+            bestMatch = item;
+        }
+    }
+
+    if (bestMatch) return bestMatch.answer;
+
+    return "🙏 I'm here to help! Ask about services, baptism, location, or anything about the church.";
+}
+
+/* ===========================
+   UI FUNCTIONS
+=========================== */
+function addMessage(text, sender) {
+    const div = document.createElement("div");
+    div.className = "msg " + sender;
+    div.innerText = text;
+    document.getElementById("messages").appendChild(div);
+    document.getElementById("messages").scrollTop = 999999;
+}
+
+/* ===========================
+   VOICE OUTPUT (TEXT → SPEECH)
+=========================== */
+function speak(text) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-ZA";
+    speech.rate = 1;
+    speech.pitch = 1;
+    window.speechSynthesis.speak(speech);
+}
+
+/* ===========================
+   SEND MESSAGE
+=========================== */
+function send() {
+    const input = document.getElementById("input");
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+
+    setTimeout(() => {
+        const reply = smartReply(text);
+        addMessage(reply, "bot");
+        speak(reply); // 🔊 AI speaks
+    }, 400);
+
+    input.value = "";
+}
+
+/* ===========================
+   VOICE INPUT (SPEECH → TEXT)
+=========================== */
+function startVoice() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+    recognition.lang = "en-ZA";
+    recognition.start();
+
+    recognition.onstart = () => {
+        addMessage("🎤 Listening...", "bot");
     };
 
-    window.cpHandleKey = function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); cpSend(); } };
-    window.cpResize = function (el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 90) + 'px'; };
-})();
+    recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        document.getElementById("input").value = text;
+        send();
+    };
+
+    recognition.onerror = () => {
+        addMessage("Voice recognition failed 😢", "bot");
+    };
+}
+
+/* ENTER KEY */
+document.getElementById("input").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") send();
+});
+
 </script>
 
 </body>
