@@ -958,6 +958,476 @@
         this.reset();
     });
 </script>
-    
+  <!-- ============================================================ 
+
+  MOTHOTLUNG SDA CHURCH – AI CHATBOT (NO API NEEDED) 
+
+  100% local JavaScript. No API key. Works offline. 
+
+  Paste everything below just before your </body> tag. 
+
+  Delete the old chatbot code first. 
+
+============================================================ --> 
+
+  
+
+<style> 
+
+  .chat-trigger { 
+
+    position: fixed; bottom: 100px; left: 25px; 
+
+    width: 58px; height: 58px; 
+
+    background: linear-gradient(135deg, #2E5C48, #1b362a); 
+
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+
+    cursor: pointer; box-shadow: 0 6px 20px rgba(46,92,72,0.4); 
+
+    z-index: 9990; border: 2px solid #C5A059; 
+
+    transition: transform 0.3s ease; 
+
+    animation: chatPulse 3s ease infinite; 
+
+  } 
+
+  .chat-trigger:hover { transform: scale(1.1); } 
+
+  @keyframes chatPulse { 
+
+    0%,100% { box-shadow: 0 6px 20px rgba(46,92,72,0.4); } 
+
+    50%      { box-shadow: 0 6px 30px rgba(197,160,89,0.6); } 
+
+  } 
+
+  .chat-trigger::after { 
+
+    content: 'AI Assistant'; 
+
+    position: absolute; left: 68px; 
+
+    background: #1b362a; color: #C5A059; 
+
+    font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; 
+
+    padding: 5px 12px; border-radius: 20px; white-space: nowrap; 
+
+    opacity: 0; transition: opacity 0.2s; pointer-events: none; 
+
+    border: 1px solid #C5A059; 
+
+  } 
+
+  .chat-trigger:hover::after { opacity: 1; } 
+
+  
+
+  .chat-panel-overlay { 
+
+    position: fixed; inset: 0; 
+
+    background: rgba(0,0,0,0.45); 
+
+    z-index: 9991; display: none; 
+
+    align-items: flex-end; justify-content: flex-start; 
+
+    padding: 0 0 20px 20px; 
+
+    backdrop-filter: blur(3px); 
+
+  } 
+
+  .chat-panel-overlay.open { display: flex; } 
+
+  
+
+  .chat-panel { 
+
+    width: 375px; height: 580px; 
+
+    background: #fff; border-radius: 22px; 
+
+    box-shadow: 0 28px 70px rgba(46,92,72,0.28); 
+
+    display: flex; flex-direction: column; overflow: hidden; 
+
+    animation: panelUp 0.32s cubic-bezier(0.34,1.56,0.64,1); 
+
+    font-family: 'Montserrat', sans-serif; 
+
+  } 
+
+  @keyframes panelUp { 
+
+    from { opacity:0; transform:translateY(30px) scale(0.95); } 
+
+    to   { opacity:1; transform:translateY(0)    scale(1);    } 
+
+  } 
+
+  
+
+  .cp-header { 
+
+    background: linear-gradient(135deg, #1b362a 0%, #2E5C48 100%); 
+
+    padding: 16px 18px; display: flex; align-items: center; 
+
+    gap: 12px; flex-shrink: 0; position: relative; overflow: hidden; 
+
+  } 
+
+  .cp-header::before { 
+
+    content:''; position:absolute; top:-25px; right:-25px; 
+
+    width:100px; height:100px; background:rgba(197,160,89,0.1); border-radius:50%; 
+
+  } 
+
+  .cp-avatar { 
+
+    width:42px; height:42px; background:#C5A059; border-radius:50%; 
+
+    display:flex; align-items:center; justify-content:center; 
+
+    font-size:1.25rem; flex-shrink:0; z-index:1; position:relative; 
+
+    border:2px solid rgba(255,255,255,0.2); 
+
+  } 
+
+  .cp-avatar::before { 
+
+    content:''; position:absolute; inset:-4px; 
+
+    border:2px solid rgba(197,160,89,0.35); border-radius:50%; 
+
+    animation:avPulse 2.5s ease infinite; 
+
+  } 
+
+  @keyframes avPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0;transform:scale(1.4)} } 
+
+  
+
+  .cp-header-text { flex:1; z-index:1; } 
+
+  .cp-header-text h4 { color:#fff; font-size:0.92rem; font-weight:700; margin:0; } 
+
+  .cp-header-text span { 
+
+    color:#dfc48a; font-size:0.69rem; 
+
+    display:flex; align-items:center; gap:5px; margin-top:3px; 
+
+  } 
+
+  .cp-status-dot { 
+
+    width:6px; height:6px; background:#4ade80; border-radius:50%; 
+
+    display:inline-block; animation:cpBlink 2s ease infinite; 
+
+  } 
+
+  @keyframes cpBlink { 0%,100%{opacity:1} 50%{opacity:0.25} } 
+
+  
+
+  .cp-close { 
+
+    background:rgba(255,255,255,0.12); border:none; color:#dfc48a; 
+
+    width:30px; height:30px; border-radius:50%; cursor:pointer; 
+
+    font-size:1rem; display:flex; align-items:center; justify-content:center; 
+
+    transition:background 0.2s; z-index:1; 
+
+  } 
+
+  .cp-close:hover { background:rgba(255,255,255,0.3); color:#fff; } 
+
+  
+
+  .cp-messages { 
+
+    flex:1; overflow-y:auto; padding:14px 14px 6px; 
+
+    display:flex; flex-direction:column; gap:11px; scroll-behavior:smooth; 
+
+  } 
+
+  .cp-messages::-webkit-scrollbar { width:3px; } 
+
+  .cp-messages::-webkit-scrollbar-thumb { background:#d4e3dd; border-radius:3px; } 
+
+  
+
+  .cp-msg-row { display:flex; gap:7px; animation:cpUp 0.25s ease; } 
+
+  .cp-msg-row.user { flex-direction:row-reverse; } 
+
+  @keyframes cpUp { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} } 
+
+  
+
+  .cp-av { 
+
+    width:27px; height:27px; border-radius:50%; 
+
+    display:flex; align-items:center; justify-content:center; 
+
+    font-size:0.72rem; flex-shrink:0; margin-top:2px; 
+
+  } 
+
+  .cp-av.bot  { background:#2E5C48; color:#C5A059; } 
+
+  .cp-av.user { background:#C5A059; color:#1b362a; font-size:0.82rem; } 
+
+  
+
+  .cp-bubble { 
+
+    max-width:82%; padding:9px 13px; border-radius:16px; 
+
+    font-size:0.82rem; line-height:1.6; 
+
+  } 
+
+  .cp-bubble.bot  { background:#F5F1EA; color:#2d3436; border-bottom-left-radius:3px; } 
+
+  .cp-bubble.user { background:#2E5C48; color:#fff;    border-bottom-right-radius:3px; } 
+
+  
+
+  /* Typing dots */ 
+
+  .cp-typing { display:flex; gap:4px; align-items:center; padding:3px 0; } 
+
+  .cp-typing span { 
+
+    width:6px; height:6px; background:#6b7a74; 
+
+    border-radius:50%; animation:cpBounce 1.1s ease infinite; 
+
+  } 
+
+  .cp-typing span:nth-child(2) { animation-delay:0.16s; } 
+
+  .cp-typing span:nth-child(3) { animation-delay:0.32s; } 
+
+  @keyframes cpBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} } 
+
+  
+
+  .cp-suggestions { 
+
+    padding:6px 12px 4px; display:flex; flex-wrap:wrap; gap:5px; flex-shrink:0; 
+
+  } 
+
+  .cp-chip { 
+
+    background:#F5F1EA; border:1px solid #d4e3dd; color:#2E5C48; 
+
+    font-size:0.71rem; font-weight:600; padding:5px 11px; border-radius:50px; 
+
+    cursor:pointer; transition:all 0.2s; font-family:'Montserrat',sans-serif; white-space:nowrap; 
+
+  } 
+
+  .cp-chip:hover { background:#2E5C48; color:#fff; border-color:#2E5C48; transform:translateY(-1px); } 
+
+  
+
+  .cp-input-bar { 
+
+    padding:10px 12px; border-top:1px solid #eef3f0; 
+
+    display:flex; gap:8px; align-items:flex-end; flex-shrink:0; 
+
+  } 
+
+  .cp-input-bar textarea { 
+
+    flex:1; resize:none; border:1.5px solid #d4e3dd; border-radius:12px; 
+
+    padding:9px 12px; font-family:'Montserrat',sans-serif; font-size:0.82rem; 
+
+    color:#2d3436; background:#F5F1EA; outline:none; 
+
+    min-height:38px; max-height:90px; line-height:1.4; transition:border-color 0.2s; 
+
+  } 
+
+  .cp-input-bar textarea:focus { border-color:#2E5C48; background:#fff; } 
+
+  .cp-input-bar textarea::placeholder { color:#9fb5ae; } 
+
+  
+
+  .cp-send { 
+
+    width:38px; height:38px; background:#2E5C48; color:#fff; 
+
+    border:none; border-radius:10px; cursor:pointer; 
+
+    display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; 
+
+  } 
+
+  .cp-send:hover { background:#C5A059; transform:scale(1.06); } 
+
+  .cp-send svg { width:16px; height:16px; fill:currentColor; } 
+
+  
+
+  .cp-footer { 
+
+    text-align:center; font-size:0.62rem; color:#9fb5ae; 
+
+    padding:5px 8px; border-top:1px solid #f0f5f3; flex-shrink:0; 
+
+  } 
+
+  
+
+  @media (max-width:420px) { 
+
+    .chat-panel { width:calc(100vw - 16px); height:82vh; } 
+
+    .chat-panel-overlay { padding:0 8px 8px 8px; } 
+
+    .chat-trigger { width:50px; height:50px; bottom:80px; left:10px; } 
+
+    .chat-trigger::after { display:none; } 
+
+  } 
+
+</style> 
+
+  
+
+<!-- Robot trigger button --> 
+
+<button class="chat-trigger" onclick="toggleChatPanel()" aria-label="Open Church AI Assistant"> 
+
+  <i class="fa-solid fa-robot" style="font-size:1.4rem; color:#C5A059;"></i> 
+
+</button> 
+
+  
+
+<!-- Chat panel --> 
+
+<div class="chat-panel-overlay" id="chatPanelOverlay" onclick="handleOverlayClick(event)"> 
+
+  <div class="chat-panel"> 
+
+  
+
+    <div class="cp-header"> 
+
+      <div class="cp-avatar">✦</div> 
+
+      <div class="cp-header-text"> 
+
+        <h4>Mothotlung Church Assistant</h4> 
+
+        <span><span class="cp-status-dot"></span> Online – ready to help you</span> 
+
+      </div> 
+
+      <button class="cp-close" onclick="toggleChatPanel()">✕</button> 
+
+    </div> 
+
+  
+
+    <div class="cp-messages" id="cpMessages"> 
+
+      <div class="cp-msg-row bot"> 
+
+        <div class="cp-av bot">✦</div> 
+
+        <div class="cp-bubble bot"> 
+
+          Sawubona! 🙏 I'm your <strong>Mothotlung SDA Church</strong> assistant.<br><br> 
+
+          Ask me about our services, beliefs, giving, baptism, ministries, and more! 
+
+        </div> 
+
+      </div> 
+
+    </div> 
+
+  
+
+    <div class="cp-suggestions" id="cpSuggestions"> 
+
+      <button class="cp-chip" onclick="cpSend('What time are services?')">⏰ Services</button> 
+
+      <button class="cp-chip" onclick="cpSend('How do I get baptised?')">✝️ Baptism</button> 
+
+      <button class="cp-chip" onclick="cpSend('How can I give or donate?')">💛 Give</button> 
+
+      <button class="cp-chip" onclick="cpSend('What ministries are there?')">🤝 Ministries</button> 
+
+      <button class="cp-chip" onclick="cpSend('How do I request prayer?')">🙏 Prayer</button> 
+
+      <button class="cp-chip" onclick="cpSend('What do Adventists believe?')">📖 Beliefs</button> 
+
+    </div> 
+
+  
+
+    <div class="cp-input-bar"> 
+
+      <textarea 
+
+        id="cpInput" 
+
+        placeholder="Type your question here…" 
+
+        rows="1" 
+
+        onkeydown="cpHandleKey(event)" 
+
+        oninput="cpResize(this)" 
+
+      ></textarea> 
+
+      <button class="cp-send" onclick="cpSend()" title="Send"> 
+
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> 
+
+      </button> 
+
+    </div> 
+
+  
+
+    <div class="cp-footer">Made by WacxDigital (Lesley Tsoka) · Mothotlung SDA Church © 2026</div> 
+
+  </div> 
+
+</div> 
+
+ 
+<script> /* ================================================================ MOTHOTLUNG SDA CHURCH – LOCAL CHATBOT (NO API REQUIRED) Pure JavaScript – works offline – no API key needed ================================================================ */ (function () { /* ── PANEL TOGGLE ── */ let panelOpen = false; window.toggleChatPanel = function () { panelOpen = !panelOpen; document.getElementById('chatPanelOverlay').classList.toggle('open', panelOpen); if (panelOpen) setTimeout(() => document.getElementById('cpInput').focus(), 320); }; window.handleOverlayClick = function (e) { if (e.target === document.getElementById('chatPanelOverlay')) toggleChatPanel(); }; /* ── KNOWLEDGE BASE ── Each entry has: k  = keywords (any match adds score; more matches = better match) a  = answer (supports \n for line breaks and **bold**) ── */ const KB = [ /* ── GREETINGS ── */ { k:['hello','hi','hey','sawubona','howzit','hola','greet','good morning','good afternoon','good evening','sup'], a:`Sawubona! 🙏 Welcome to **Mothotlung SDA Church**!\n\nHow can I assist you today? Ask me anything about our services, beliefs, ministries, or how to get involved.` }, { k:['who are you','what are you','your name','introduce'], a:`I'm the **Mothotlung SDA Church AI Assistant** — here to help you 24/7 with questions about our church, services, beliefs, and community. No question is too small! 🙏` }, { k:['thank','thanks','appreciated','helpful'], a:`You're very welcome! God bless you. 🙏 Is there anything else I can help you with?` }, { k:['bye','goodbye','see you','later','ciao'], a:`God bless you! We hope to see you this Sabbath. 🙏 Have a wonderful day!` }, /* ── SERVICE TIMES ── */ { k:['time','when','service','worship','program','schedule','start','begin','sabbath school','divine service','afternoon'], a:`**Our Saturday Schedule:**\n\n📖 Sabbath School — 9:15 AM\n⛪ Divine Service — 11:00 AM\n📚 Afternoon Lessons — 2:30 PM\n\nGeneral hours: 9:30 AM – 5:00 PM\n\nWe also have mid-week prayer meetings on **Wednesdays** (when scheduled). Everyone is welcome — no membership needed!` }, /* ── LOCATION ── */ { k:['where','location','address','find','directions','map','how to get','situated'], a:`📍 **Our Address:**\nDisteneng Katakane Street,\nMothutlung Rd, Brits,\nNorth West 0268, South Africa\n\nYou can search **"Mothotlung SDA Church"** on Google Maps. Parking is available on site. We'd love to see you this Sabbath!` }, /* ── CONTACT ── */ { k:['contact','phone','call','number','reach','email','get in touch','whatsapp'], a:`📞 **Church Clerk:** +27 72 361 5540\n📞 **Church Elder:** +27 72 322 7621 (WhatsApp)\n🙏 **Prayer Line:** +27 83 568 1837\n📧 **Email:** mothutlung@toc.adventist.org\n📘 **Facebook:** facebook.com/mothotlungsda\n▶️ **YouTube:** youtube.com/@MothotlungAdventist` }, /* ── LEADERSHIP ── */ { k:['pastor','ramugondo','leader','head','reverend','minister'], a:`Our **Lead Pastor** is **Pastor KG. Ramugondo**. He leads our congregation with a heart for the Word and the community. You can reach the church at +27 72 361 5540.` }, { k:['elder','monkwe'], a:`Our **Head Elder** is **Mr. Monkwe**. He is available for spiritual guidance, home visits, and baptism enquiries.\n📞 +27 72 322 7621 (also WhatsApp)` }, { k:['youth leader','legeote','youth','young people'], a:`Our **Youth Leader** is **Mrs. Legeote**, who leads our young people with passion and purpose. Our youth are also involved in the Pathfinder Club (ages 10–15). Reach us at +27 72 361 5540.` }, /* ── BRANCHES ── */ { k:['branch','brits','thetele','titili','other church','other location'], a:`We have **two branches** of Mothotlung SDA Church:\n\n📍 **Brits SDA Branch**\nKerk Street, Elangeni College, Brits\nSaturdays at 9:00 AM\n\n📍 **Thetele SDA Branch**\nChurch Street, Thetele, Mothotlung\nSaturdays at 9:00 AM\n\nAll three locations are one family in Christ! 🙏` }, /* ── BAPTISM & MEMBERSHIP ── */ { k:['baptism','baptise','baptize','join','member','membership','how to join','become'], a:`We'd love to welcome you into the church family! 🙏\n\n**Steps to Baptism:**\n1. Visit any Saturday — everyone is welcome, no pressure\n2. Request free **Bible study classes** (personal, at your own pace)\n3. Complete the studies and decide for yourself\n4. Be baptised by full immersion — a beautiful declaration of faith!\n\n**To get started:**\n📞 Elder Monkwe: +27 72 322 7621\n📧 mothutlung@toc.adventist.org\n🌐 Or fill out the form at connect.html` }, { k:['bible study','study','class','learn'], a:`We offer **free Bible study classes** for anyone who wants to understand the Word better — whether you're exploring faith for the first time or deepening what you already believe.\n\nNo pressure, no commitment, just truth. 📖\n\nContact Elder Monkwe at **+27 72 322 7621** to get started.` }, /* ── PRAYER ── */ { k:['prayer','pray','request','intercession','need prayer','struggling'], a:`We would be honoured to pray for you. 🙏\n\n**Ways to request prayer:**\n📞 Prayer Line: **+27 83 568 1837**\n💬 WhatsApp Elder: **+27 72 322 7621**\n📧 Email: mothutlung@toc.adventist.org\n🌐 Online form: connect.html\n\nAll requests are kept **strictly confidential** and prayed over by our dedicated team. You are not alone. ❤️` }, /* ── GIVING / DONATIONS ── */ { k:['give','donate','donation','offering','tithe','money','bank','transfer','contribute','support financially'], a:`Thank you for your generous heart! 🙏\n\n**Bank Transfer (Standard Bank):**\n🏦 Account Name: **SDA Church Mothotlung**\n🔢 Account No: **130815675**\n📍 Branch Code: **051001**\n📝 Reference: **Your Name + Offering Type**\n_(e.g. "John Tithe" or "Mary Building Fund")_\n\nTypes: Tithe, General Offering, Building Fund\n💳 Online card giving coming soon at give.html\n\n_"God loves a cheerful giver." — 2 Corinthians 9:7_` }, { k:['tithe','tenth','10 percent','malachi'], a:`**What is Tithe?**\n\nTithe is returning **10% of your income** to God as an act of worship and trust in Him as provider. It is based on Malachi 3:10:\n\n_"Bring the whole tithe into the storehouse... Test me in this, says the Lord Almighty."_\n\nTithe supports the gospel ministry worldwide through the Trans-Orange Conference. Offerings above tithe support your local church directly.` }, /* ── MINISTRIES ── */ { k:['ministry','ministries','program','department','group','serve','involved','get involved','volunteer'], a:`We have **8 active ministries** — there's a place for everyone! 🙏\n\n👶 **Children's Ministry** (ages 0–12)\n🏕️ **Pathfinder Club** (ages 10–15)\n🥗 **Health & Wellness** (cooking, seminars)\n👨‍👩 **Men's & Women's Ministries**\n🤝 **Community Outreach** (food, health expos)\n🎥 **Media Team**\n🙏 **Prayer Ministry**\n📖 **Sabbath School**\n\nContact us at **+27 72 361 5540** to find the right fit for you!` }, { k:['pathfinder','scout','youth club','10','11','12','13','14','15','teen','teenager'], a:`**Pathfinder Club** is our world-renowned scout-style program for ages **10–15**.\n\n🏕️ Outdoor & survival skills\n🤝 Community service projects\n📖 Spiritual growth & Bible knowledge\n🏆 Awards & achievements\n\nTheme: _"Adventure. Faith. Friendship."_\n\nContact **Mrs. Legeote** (Youth Leader) at +27 72 361 5540 to enrol your child!` }, { k:['children','kids','child','sunday school','sabbath school','toddler','baby'], a:`Our **Children's Ministry** (ages 0–12) provides a fun, safe, and nurturing space where children discover the love of Jesus through:\n\n🎨 Creative activities\n📖 Age-appropriate Bible lessons\n🎵 Songs and worship\n👯 Friends and community\n\nChildren have their own **Sabbath School classes** during our Saturday services. All children are welcome!` }, { k:['health','wellness','diet','food','cooking','plant','vegan','vegetarian','seminar','lifestyle'], a:`Our **Health & Wellness Ministry** promotes the Bible principle that our bodies are the temple of the Holy Spirit (1 Cor 6:19-20).\n\n🥗 Plant-based cooking classes\n💊 Health seminars & screenings\n🧘 Stress-management workshops\n\nAll programs are **open to the community** — no church membership required. Contact us at +27 72 361 5540 for the next event!` }, { k:['outreach','community','food','distribution','feeding','social','help'], a:`Our **Community Outreach Ministry** puts God's love into practical action:\n\n🥫 Food distribution drives\n🩺 Health expos & screenings\n🏘️ Community development\n\nVolunteers are always welcome! Visit **ministries/outreach.html** or call **+27 72 361 5540** to get involved.` }, { k:['media','team','youtube','record','video','broadcast','stream','live','camera'], a:`Our **Media Team** is a passionate group of volunteers who:\n\n🎥 Record and upload all sermons to YouTube\n📡 Manage our live stream every Saturday\n💻 Handle the church's digital presence\n\nWatch us live on **youtube.com/@MothotlungAdventist** every Sabbath morning! If you have media skills and want to serve, contact us at +27 72 361 5540.` }, /* ── SERMONS & MEDIA ── */ { k:['sermon','preach','message','watch','listen','youtube','video','online','livestream','live stream'], a:`**Watch our sermons online:**\n\n▶️ YouTube: youtube.com/@MothotlungAdventist\n📡 Live stream every **Saturday morning**\n📂 Full sermon archive at **media.html**\n\n**Download sermon notes (PDF):**\n• "From Fiji to the Frontlines" — Feb 14, 2026\n• "Faith in the Modern Age" — Feb 7, 2026\n\n📻 **Adventist Radio:**\n• AWR SIDmedia: awr.live\n• SID Media: sidmedia.org\n• 3ABN: 3abn.org` }, /* ── THE SABBATH ── */ { k:['sabbath','saturday','sunday','day of worship','rest','seventh day','friday sunset'], a:`**The Seventh-day Sabbath** is one of our most cherished beliefs. 🕊️\n\nGod rested on the **seventh day (Saturday)** and blessed it at Creation _(Genesis 2:1-3)_. The fourth commandment says: _"Remember the Sabbath day, to keep it holy."_ _(Exodus 20:8)_\n\nThe Sabbath runs from **sunset Friday to sunset Saturday** — a gift of rest, worship, and connection with God.\n\nWe do not believe Sunday replaced the Sabbath. Saturday has always been the seventh day of the week in every calendar.` }, /* ── STATE OF THE DEAD ── */ { k:['dead','death','die','heaven','hell','afterlife','soul','ghost','spirit','unconscious','sleep','resurrection'], a:`**What happens when we die?**\n\nAdventists believe death is a peaceful, **unconscious sleep** — not suffering in hell or floating in heaven.\n\n📖 _"The dead know nothing."_ — Ecclesiastes 9:5\n📖 _"Lazarus sleeps."_ — John 11:11\n\nOur loved ones rest peacefully until the **resurrection**, when Jesus returns and raises the righteous. This brings great comfort — death is not the end, just a sleep before the glorious morning! 🌅` }, /* ── SECOND COMING ── */ { k:['second coming','return','jesus return','advent','end time','rapture','come back','parousia'], a:`The **Second Coming of Jesus** is the great hope of every Adventist — it's even in our name! ✨\n\n_"This same Jesus... will come back in the same way you have seen him go."_ — Acts 1:11\n\nHis return will be:\n⚡ **Literal** — a real, physical event\n👁️ **Visible** — every eye will see Him\n🌍 **Global** — worldwide and unmistakable\n\nWhen He comes, the righteous dead are raised and together with the living righteous, we meet Jesus in the air _(1 Thessalonians 4:16-17)_.` }, /* ── BELIEFS / ADVENTISM ── */ { k:['believe','belief','doctrine','fundamental','adventist','sda','theology','what is adventist','what do','teach'], a:`**Seventh-day Adventists** are a global Protestant Christian church with over 22 million members worldwide. Our core beliefs include:\n\n📖 The Bible as God's inspired Word\n✝️ Salvation by grace through faith in Jesus\n🕊️ The Saturday Sabbath (7th day of rest)\n😴 Death as an unconscious sleep\n🌅 The literal Second Coming of Jesus\n💧 Baptism by full immersion\n🥗 Healthy living (body as God's temple)\n🔟 The Ten Commandments still apply\n\nWe hold **28 Fundamental Beliefs** — ask me about any specific one!` }, { k:['28','fundamental','beliefs','list'], a:`**The 28 Fundamental Beliefs (Summary):**\n\n1. Holy Scriptures — Bible is God's Word\n2. Trinity — Father, Son, Holy Spirit\n3. God the Father — Creator & Sovereign\n4. Jesus Christ — Saviour & Lord\n5. Holy Spirit — Empowers the church\n6. Creation — Six literal days\n7. Human Nature — Made in God's image, fallen through sin\n8. Great Controversy — Cosmic battle between good and evil\n9. Christ's Life & Death — Atonement for our sins\n10. Salvation — By faith in Jesus alone\n11–14. Church, Remnant, Unity, Growing in Christ\n15. Baptism — By full immersion\n16. Lord's Supper — Communion\n17–18. Spiritual Gifts & Gift of Prophecy\n19. Law of God — Ten Commandments\n20. The Sabbath — Saturday rest\n21. Stewardship — Tithe & offerings\n22–23. Christian Behaviour & Marriage\n24. Heavenly Sanctuary — Christ as our High Priest\n25. Second Coming — Literal return of Jesus\n26. Death & Resurrection — Death is a sleep\n27. Millennium — 1,000 years in heaven\n28. New Earth — Eternal paradise 🌍✨` }, { k:['trinity','father','son','holy spirit','godhead','three'], a:`**The Trinity:**\n\nAdventists believe in one God existing as three co-eternal Persons:\n\n👑 **God the Father** — Creator, Sovereign, loving and just\n✝️ **God the Son (Jesus)** — Saviour, fully God and fully human\n🕊️ **God the Holy Spirit** — Comforter, Empowerer, present in the church\n\n_"Go and make disciples of all nations, baptising them in the name of the Father and of the Son and of the Holy Spirit."_ — Matthew 28:19` }, { k:['ellen white','white','prophet','spirit of prophecy','great controversy','steps to christ'], a:`**Ellen G. White (1827–1915)** was a co-founder of the Seventh-day Adventist Church and is regarded as having the **gift of prophecy** _(Revelation 12:17; 19:10)_.\n\nHer most-loved books:\n📚 **Steps to Christ** — How to find Jesus\n📚 **The Desire of Ages** — Life of Christ\n📚 **The Great Controversy** — History of the cosmic battle\n📚 **Ministry of Healing** — Health principles\n\nHer writings are highly valued but are always **subject to the Bible** as the supreme authority.` }, /* ── DIET & HEALTH ── */ { k:['eat','food','pork','alcohol','drink','tobacco','smoke','clean','unclean','vegetarian','vegan','diet'], a:`Adventists believe our bodies are **God's temple** _(1 Corinthians 6:19-20)_, so we care about what we put into them.\n\n✅ **Many Adventists eat:**\nFruits, vegetables, grains, legumes, nuts\n\n❌ **Many Adventists avoid:**\nPork & shellfish _(Leviticus 11)_\nAlcohol & tobacco\nProcessed & harmful foods\n\nThis is personal conviction, not salvation. Our Health Ministry runs free **cooking classes & seminars** open to everyone — contact us at +27 72 361 5540!` }, /* ── DIFFERENT FROM OTHER CHURCHES ── */ { k:['different','unique','special','other church','catholic','protestant','charismatic','pentecostal','methodist','differ'], a:`**What makes Adventists distinctive?**\n\n🔵 We worship on **Saturday** (the biblical 7th day)\n😴 We believe death is an **unconscious sleep**, not immediate heaven/hell\n🥗 We emphasise **health & wholistic living**\n📖 We have **28 Fundamental Beliefs** as our doctrinal framework\n🔮 We recognise **Ellen G. White** as a prophetic gift\n🌅 We have a strong focus on **the Second Coming of Jesus**\n⚖️ We believe the **Ten Commandments** (including Sabbath) still apply\n\nWe are a welcoming family — all are invited to explore with us!` }, /* ── WELCOME / VISITOR ── */ { k:['visit','visitor','first time','new','come','attending','welcome','guest'], a:`We would be **thrilled** to have you visit! 🙏\n\n**What to expect on your first visit:**\n🎵 Heartfelt congregational singing\n📖 Engaging Bible study (Sabbath School)\n🙏 Christ-centered sermon\n👋 A warm, friendly welcome from our family\n\n**You do NOT need to be a member to attend.** All are welcome — any background, any history. Just come as you are!\n\n📍 Katakane Street, Mothotlung, Brits\n⏰ Saturdays from 9:15 AM` }, { k:['dress','wear','clothes','what to wear','uniform','attire'], a:`There is **no strict dress code** at Mothotlung SDA Church. Smart casual is common in our congregation, but please wear whatever makes you comfortable. What matters most is that you come! 👏\n\nWe want everyone to feel welcomed and at ease.` }, { k:['parking','park','car','transport'], a:`Yes, **parking is available** at the church premises.\n\n📍 Katakane Street, Mothotlung, Brits\n\nIf you need directions or transport assistance, please call us at **+27 72 361 5540**.` }, /* ── EVENTS & SPECIAL OCCASIONS ── */ { k:['wedding','marry','marriage','get married'], a:`We would be honoured to host your wedding! 💍\n\nPlease contact **Pastor KG. Ramugondo** or **Elder Monkwe** to discuss arrangements, dates, and pre-marital counselling.\n\n📞 +27 72 361 5540\n📧 mothutlung@toc.adventist.org\n\nWe believe marriage is a lifelong covenant between a man and a woman, reflecting Christ's love for the church.` }, { k:['funeral','burial','grieve','grief','loss','death of','passed away','condolence','bereavement'], a:`We extend our sincere condolences and are here to walk with you through this difficult time. 🙏\n\nOur **pastoral team** is available for:\n💛 Grief support and counselling\n⛪ Funeral services and arrangements\n🏠 Home visits and prayer\n\nPlease don't face this alone. Contact us immediately:\n📞 Elder Monkwe: **+27 72 322 7621**\n📧 mothutlung@toc.adventist.org` }, { k:['counsel','counselling','support','help','difficult','struggle','mental','depressed','anxiety','worry','stress'], a:`We hear you, and you are **not alone**. 🙏\n\nOur elders offer **pastoral care and a listening ear** for anyone going through a difficult time. We can also refer to professional counsellors if needed.\n\n**Reach out today:**\n📞 Elder Monkwe: +27 72 322 7621 (WhatsApp)\n🙏 Prayer Line: +27 83 568 1837\n📧 mothutlung@toc.adventist.org\n\n_"Cast all your anxiety on Him because He cares for you."_ — 1 Peter 5:7` }, /* ── CHRISTMAS / EASTER / HOLIDAYS ── */ { k:['christmas','december 25','easter','holiday','celebrate'], a:`This is a personal choice for Adventist members. Many celebrate Christmas and Easter **culturally**, while recognising these dates are not found in the Bible.\n\nThe **Adventist church calendar** focuses on:\n📅 The weekly Sabbath (every Saturday)\n🌅 The Second Coming of Jesus\n📖 Biblical events and seasons\n\nAll are welcome to join us any Sabbath, whatever time of year!` }, /* ── BIBLE APP ── */ { k:['bible app','bible online','kjv','read bible','bible.html','devotional','verse of the day','bookmark'], a:`📖 **Mothotlung Bible App** — available at **Bible.html** on our website!\n\nFeatures:\n📚 All 66 books in **King James Version (KJV)**\n🌅 **Verse of the Day**\n🔖 **Bookmarks** — save your favourite verses\n✝️ **28 Fundamental Beliefs** reference\n📝 **Daily Devotionals**\n🔍 **Search** any verse or topic\n\nBuilt especially for our Mothotlung SDA community — completely free!` }, /* ── GLOBAL FAMILY ── */ { k:['general conference','world church','global','gc','international','toc','trans orange','conference','division'], a:`Mothotlung SDA Church is part of a **global family of 22+ million members** in 200+ countries!\n\n🌍 **General Conference** (world HQ): adventist.org\n🇿🇦 **Trans-Orange Conference** (our region): toc.adventist.org\n📡 **Southern Africa-Indian Ocean Division**: sidmedia.org\n\nAs Adventists we believe we are one family in Christ — no matter the country, language, or culture.` }, /* ── NEWSLETTER ── */ { k:['newsletter','subscribe','email update','notification','updates'], a:`Stay connected with Mothotlung SDA Church! 📬\n\nSubscribe to our **weekly newsletter** on the **media page (media.html)** to receive:\n📨 Weekly sermon notifications\n📅 Upcoming event announcements\n📖 Spiritual encouragement\n\nYou can unsubscribe anytime. We respect your privacy.` }, /* ── GALLERY ── */ { k:['gallery','photo','picture','image','moments','event photo'], a:`📸 Visit our **"Moments of Faith"** photo gallery at **gallery.html** on the website!\n\nSee photos from:\n⛪ Church services and special Sabbaths\n🤝 Community outreach events\n👶 Children's and Pathfinder activities\n🎉 Church celebrations and milestones\n\nGod is doing beautiful things in our community!` }, /* ── WHAT IS ADVENTISM ── */ { k:['what is sda','what is seventh day','what is adventist','adventism','about the church'], a:`**Seventh-day Adventist (SDA) Church** is a global Protestant Christian denomination founded in the 1860s in the United States.\n\n🌍 **22+ million members** in 200+ countries\n🏥 Runs the **largest Protestant healthcare network** in the world\n📚 Operates thousands of **schools and universities**\n📻 Owns **Hope Channel** and AWR radio globally\n\n**Our name explains our core beliefs:**\n📅 **Seventh-day** = We worship on Saturday, God's Sabbath\n🌅 **Adventist** = We eagerly await Christ's Second Advent (return)` }, ]; /* END KB */ /* ── SMART MATCHING ENGINE ── */ function getReply(input) { const msg  = input.toLowerCase().trim(); const words = msg.split(/\s+/); let best = null; let top  = 0; for (const entry of KB) { let score = 0; for (const kw of entry.k) { if (msg.includes(kw)) score += kw.length > 5 ? 3 : 2; // longer keyword = more specific = higher weight else for (const w of words) { if (kw.includes(w) && w.length > 3) score += 1; } } if (score > top) { top = score; best = entry; } } if (best && top >= 2) return best.a; /* Soft fallback for very short or ambiguous inputs */ return `🙏 I'm not sure I understood that fully. Here are some things you can ask me:\n\n⏰ Service times\n📍 Location & directions\n✝️ Baptism & membership\n💛 How to give or donate\n🤝 Ministries & programs\n📖 What Adventists believe\n🙏 Prayer requests\n\nOr call us directly at **+27 72 361 5540**.`; } /* ── RENDER HELPERS ── */ function fmt(text) { return text .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') .replace(/_(.*?)_/g,       '<em>$1</em>') .replace(/\n/g,            '<br>'); } function append(role, text) { const area = document.getElementById('cpMessages'); const row  = document.createElement('div'); row.className = 'cp-msg-row ' + role; const av   = document.createElement('div'); av.className = 'cp-av ' + role; av.textContent = role === 'bot' ? '✦' : '👤'; const bub  = document.createElement('div'); bub.className = 'cp-bubble ' + role; bub.innerHTML = fmt(text); row.appendChild(av); row.appendChild(bub); area.appendChild(row); area.scrollTop = area.scrollHeight; } function showTyping() { const area = document.getElementById('cpMessages'); const row  = document.createElement('div'); row.id = 'cpTyping'; row.className = 'cp-msg-row bot'; const av   = document.createElement('div'); av.className = 'cp-av bot'; av.textContent = '✦'; const bub  = document.createElement('div'); bub.className = 'cp-bubble bot'; bub.innerHTML = '<div class="cp-typing"><span></span><span></span><span></span></div>'; row.appendChild(av); row.appendChild(bub); area.appendChild(row); area.scrollTop = area.scrollHeight; } function removeTyping() { const t = document.getElementById('cpTyping'); if (t) t.remove(); } function hideSuggestions() { const s = document.getElementById('cpSuggestions'); if (s) s.style.display = 'none'; } /* ── SEND ── */ window.cpSend = function (prefill) { const input = document.getElementById('cpInput'); const text  = (prefill !== undefined ? prefill : input.value).trim(); if (!text) return; hideSuggestions(); append('user', text); if (prefill === undefined) { input.value = ''; cpResize(input); } showTyping(); /* Simulate a short "thinking" delay for natural feel */ setTimeout(function () { removeTyping(); append('bot', getReply(text)); }, 600 + Math.random() * 400); }; /* ── UI HELPERS ── */ window.cpHandleKey = function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); cpSend(); } }; window.cpResize = function (el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 90) + 'px'; }; })(); </script>
+ 
+
+ 
+
+   
 </body>
 </html>
