@@ -598,6 +598,16 @@
             transform: translateY(-5px);
         }
 
+                /* --- CHURCH MOMENTS GALLERY --- */
+        .media-gallery iframe {
+            width: 100%;
+            height: 600px;
+            border: 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            background: var(--white);
+            margin-bottom: 60px;
+        }
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
             .hamburger { display: flex; }
@@ -754,7 +764,16 @@
             </div>
         </div>
     </div>
-
+<!-- CHURCH MOMENTS (Google Drive gallery) -->
+    <h2 class="section-title">Church Moments</h2>
+    <p class="section-subtitle">Photos and videos shared by our church family.</p>
+    <div class="media-gallery">
+        <iframe
+            src="https://drive.google.com/embeddedfolderview?id=1CHnbjGbSqz77xKFysfFO7vhLVXdIgmUf#grid"
+            title="Church media gallery"
+            loading="lazy">
+        </iframe>
+    </div>
 </main>
 
 <!-- SERMON DOWNLOADS SECTION -->
